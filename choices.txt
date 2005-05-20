@@ -1,0 +1,36 @@
+DB IMPLEMENTATION
+
+I decided that a simple and robust method of accessing the data file was to
+have a single data access object for the server which performs all reading
+and writing of the database synchronously (i.e. no data caching, all reading
+and writing is directly to and from the file). Therefore this class contains
+a single RandomAccessFile instance for accessing the database.
+
+To simplify data integrity any method that moves the file pointer is
+synchronized on the Data object's monitor.
+
+I did not make the Data class a singleton to allow for future applications
+that may have more than one Data object accessing different data files
+simultaneously.
+
+The implementation of the interface for this application does not throw a
+DuplicateKeyException as it is valid to have identical records in the database.
+This is because there could be more than one room available with the exact
+same details. 
+
+EXTENDING THE DB INTERFACE 
+
+I extended the DB interface to create an interface appropriate for this 
+particular application whereby an additional findExact method was added to
+find exact matches to the criteria as specified rather than the superinterface
+find method that matches criteria beginning with matching substrings. 
+
+The findExact method also takes as an argument the type of matching of the
+criteria to be done, either returning a match if ALL fields match (logical 
+AND) or if ANY fields match (logical OR). 
+
+It was necessary to extend the DB interface rather than just adding another 
+method to my DB implementation as the transparency of the different operating 
+modes (standalone or networked) at the higher levels (GUI code) of the program 
+relies on programming to interfaces, thus hiding the underlying implementation.
+
