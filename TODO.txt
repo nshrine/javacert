@@ -1,0 +1,28 @@
+Test harness for DB class and network server.
+
+Need to catch RuntimeExceptions from proxy class e.g. when server dies whilst 
+client is still connected.
+
+Solution to above:
+    Package all remotexceptions as cause of recordnotfoundexception and
+    when you catch rnfe check for cause and terminate program with
+    dialog if instanceof remotexception.
+
+
+
+Unreferenced unlocking method doesn't unlock all records because it could:
+
+lock();
+DIE HERE
+add cookie to list of locked records
+
+therefore correct cookie not available
+
+Only way to do it, is if server unlocks all records when no more clients...
+...but what about if just 1 client dies?
+
+Need a way to unlock on server side without requiring cookie?
+
+AH HA!(?) When the unreferenced method unlocks the dead clients locked
+records, the threads waiting to lock get notified and executed then
+never unlocked!
