@@ -129,7 +129,7 @@ public class BookingDialog extends JDialog implements ActionListener {
                     String customerId = ownerField.getText().trim();
                     Integer.valueOf(customerId); //Check string is an integer
                     if (customerId.length() != 8) {
-                        throw new NumberFormatException("Must be 8 digits");
+                        throw new NumberFormatException();
                     }                    
                     record[6] = customerId; //data field 6 is the customer id.
                     db.update(recNo, record, cookie);
@@ -140,7 +140,8 @@ public class BookingDialog extends JDialog implements ActionListener {
                 db.unlock(recNo, cookie);
                 dispose();
             } catch (NumberFormatException ex) {
-                Utils.errorBox(this, ex.getMessage());
+                Utils.errorBox(this, "Invalid entry.\n\n"
+                        + "Must be an 8 digit integer");
             } catch (RecordNotFoundException ex) {
                 Utils.errorBox(this, ex.getMessage());
             } catch (suncertify.db.SecurityException ex) {

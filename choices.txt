@@ -18,6 +18,7 @@ DuplicateKeyException as it is valid to have identical records in the database.
 This is because there could be more than one room available with the exact
 same details. 
 
+
 EXTENDING THE DB INTERFACE 
 
 I extended the DB interface to create an interface appropriate for this 
@@ -33,6 +34,33 @@ It was necessary to extend the DB interface rather than just adding another
 method to my DB implementation as the transparency of the different operating 
 modes (standalone or networked) at the higher levels (GUI code) of the program 
 relies on programming to interfaces, thus hiding the underlying implementation.
+
+
+NETWORK SERVER IMPLEMENTATION
+
+I decided to use RMI for the network client-server communication as it is a
+transparent way of calling methods and passing data over the network with a
+high-level API without having to deal with network sockets and implementing
+a serialisation scheme for transmitting the data. 
+
+For remote data access I simply specified a RemoteBookingDB interface that is
+identical to the non-networked BookingDB interface except that it extends the
+Remote interface as required by RMI and each method additionally throws a
+RemoteException, as also required by the RMI API. I decided that on the 
+client side I would wrap the remote instance of the RemoteBookingDB 
+implementation in a proxy class that implements the BookingDB interface. In
+this way, using the well-known Network proxy paradigm (Chapter 10, Hardcore
+Java by Robert Simmons Jr. O'reilly ISBN 0-596-00568-7), it is possible for
+the client to transparently work with a BookingDB object with a
+factory class providing the appropriate implementation at runtime, either a
+BookingData object that accesses the data file within the same JVM or a proxy
+to a RemoteBookingData object that accesses the data file across the network. 
+
+Initially RemoteBookingData was a singleton, however when trying to implement
+a method for unlocking records when a client has died leaving a record locked
+I found that it was useful to have a RemoteBookingData instance per client 
+such that I could implement the Unreferenced interface in RemoteBookingData
+which would me to handle individual client disconnections on the server side.
 
 
 DOCUMENTATION
