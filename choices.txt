@@ -34,3 +34,7 @@ method to my DB implementation as the transparency of the different operating
 modes (standalone or networked) at the higher levels (GUI code) of the program 
 relies on programming to interfaces, thus hiding the underlying implementation.
 
+
+DOCUMENTATION
+
+Did not Javadoc interface methods.

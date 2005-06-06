@@ -32,7 +32,19 @@ public class BookingData extends Data implements BookingDB {
             InvalidDataFileException, IOException {        
         super(filename);
     }
-        
+      
+    /**
+     * Returns records that exactly match the specified criteria.
+     * An operator type must be specified to determine the type of matching
+     * to be done.
+     *
+     * @param criteria the criteria to be matched.
+     * @param operator the type of match to be performed, either 
+     * {@link BookingDB#SEARCH_TYPE_AND AND} or 
+     * {@link BookingDB#SEARCH_TYPE_OR OR}.
+     *
+     * @return an array of record numbers that match the specified criteria.
+     */    
     public synchronized int[] findExact(String[] criteria, int operator) {
         String[] data = null;
         List results = new ArrayList();

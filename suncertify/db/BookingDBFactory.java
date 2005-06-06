@@ -3,13 +3,14 @@
  *
  * Created on 06 September 2004, 13:23
  */
+
 package suncertify.db;
 
-import java.util.Properties;
 import java.rmi.*;
 import java.io.IOException;
 import suncertify.Configuration;
-import suncertify.server.*;
+import suncertify.server.Server;
+import suncertify.server.RemoteBookingDB;
 
 /**
  * This factory class is used to make instances of classes that implement the
@@ -70,16 +71,16 @@ public class BookingDBFactory {
             IOException, RemoteException, NotBoundException {        
         BookingDB db = null;
         
-        if(config.equals(Configuration.SERVER)
+        if (config.equals(Configuration.SERVER)
                 || config.equals(Configuration.ALONE)) {
             String filename = config.getFile();
             db = new BookingData(filename);
-        } else if(config.equals(Configuration.CLIENT)) {
+        } else if (config.equals(Configuration.CLIENT)) {
             String host = config.getHost();
             int port = config.getPort();
-            String url = "rmi://" + host + ":" + port + "/" + 
-                    Configuration.JNI_NAME;
-            Server server = (Server)Naming.lookup(url);
+            String url = "rmi://" + host + ":" + port + "/"
+                    + Configuration.JNI_NAME;
+            Server server = (Server) Naming.lookup(url);
             RemoteBookingDB rdb = server.getBookingDB();
             db = new BookingDataProxy(rdb);
         }

@@ -14,12 +14,12 @@ package suncertify.db;
  */
 public interface BookingDB extends DB {
     
-    /*
+    /**
      * Search type whereby all criteria must match.
      */
     public static final int SEARCH_TYPE_AND = 0;
     
-    /*
+    /**
      * Search type whereby any criteria matching will return a match.
      */
     public static final int SEARCH_TYPE_OR = 1;    

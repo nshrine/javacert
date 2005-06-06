@@ -31,6 +31,13 @@ public class RecordNotFoundException extends Exception {
         super(msg);
     }
     
+    /**
+     * Constructs an instance of <code>RecordNotFoundException</code> with the
+     * specified <code>Throwable</code> object as the cause.
+     *
+     * @param cause <code>Throwable</code> object that specifies the cause of
+     *          this exception.
+     */    
     public RecordNotFoundException(Throwable cause) {
         super(cause);
     }
