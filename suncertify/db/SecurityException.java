@@ -13,7 +13,8 @@ package suncertify.db;
 public class SecurityException extends Exception {
     
     /**
-     * Creates a new instance of <code>SecurityException</code> without detail message.
+     * Creates a new instance of <code>SecurityException</code> without
+     * detail message.
      */
     public SecurityException() {
         super();
@@ -21,7 +22,9 @@ public class SecurityException extends Exception {
     
     
     /**
-     * Constructs an instance of <code>SecurityException</code> with the specified detail message.
+     * Constructs an instance of <code>SecurityException</code> with the
+     * specified detail message.
+     *
      * @param msg the detail message.
      */
     public SecurityException(String msg) {

@@ -496,6 +496,14 @@ public class Data implements DB {
         }
     }
 
+    /**
+     * Reads the data schema from the file header.
+     *
+     * @throws IOException if there is an error reading the file.
+     *
+     * @return a Map where the keys are the field names and the values are the
+     *          field lengths in bytes.
+     */    
     private Map loadSchema() throws IOException {
         Map map = new LinkedHashMap();
 
@@ -511,6 +519,11 @@ public class Data implements DB {
         return map;
     }
 
+    /**
+     * Returns the length of records in the data file.
+     *
+     * @return the length of records in the data file in bytes.
+     */    
     private int getRecordLength() {
         int recordLength = 1; //Each record starts with 1 byte flag
         Iterator itr = schema.values().iterator();
@@ -523,6 +536,13 @@ public class Data implements DB {
         return recordLength;
     }
 
+    /**
+     * Returns the number of deleted records in the data file.
+     *
+     * @throws IOException if there is an error reading the file.
+     *
+     * @return the number of deleted records in the data file.
+     */    
     private int countDeletedRecords() throws IOException {
         int numDeleted = 0;
 

@@ -3,14 +3,23 @@
  *
  * Created on 06 September 2004, 19:31
  */
+
 package suncertify;
 
 import java.util.Properties;
 import java.io.*;
 
 /**
+ * This is basically a wrapper class round a <code>Properties</code> object
+ * that holds a description of the configuration each instance represents 
+ * and descriptions for the key-value pairs of the enclosed
+ * <code>Properties</code> object.
+ * <p>
+ * In this way a GUI tool for editing the configuration can determine the
+ * type of value and dynamically display field prompts based on the
+ * retrieved key-value pair description. 
  *
- * @author  Nick
+ * @author Nick Shrine
  */
 public class Configuration {        
             
@@ -28,7 +37,7 @@ public class Configuration {
      * The properties key for the server port.
      */
     public static final String PORT_KEY = "port";
-    
+        
     /**
      * The description text for the file field.
      */
@@ -95,7 +104,7 @@ public class Configuration {
         
         SERVER = new Configuration("server", serverKeys, "Server");
         CLIENT = new Configuration("client", clientKeys, "Network Client");
-        ALONE = new Configuration("alone", aloneKeys, "Standalone Client");                
+        ALONE = new Configuration("alone", aloneKeys, "Standalone Client");
     }
         
     /**
@@ -131,7 +140,7 @@ public class Configuration {
      * @param description text that describes the mode of operation this 
      *      <code>Configuration</code> specifies.
      */    
-    protected Configuration(String prefix, String[] keys, String description) {        
+    protected Configuration(String prefix, String[] keys, String description) {
         this.prefix = prefix;
         this.keys = keys;
         this.description = description;
@@ -165,7 +174,7 @@ public class Configuration {
     public String getDescription() {
         return description;
     }
-    
+        
     /**
      * Returns the property value associated with the given key.
      *
@@ -267,13 +276,15 @@ public class Configuration {
         
         return desc;
     }
-    
+        
     /**
-     * 
+     * Returns the last part of the key that indicates what type of value it
+     * is pointing to. 
      *
-     * @param key
+     * @param key they key string that we want to determine the type of.
      *
-     * @return
+     * @return the type of this key, built-in key types are {@link #FILE_KEY
+     * FILE_KEY}, {@link #HOST_KEY HOST_KEY} and {@link #PORT_KEY PORT_KEY}.
      */    
     public static String getKeyType(String key) {        
         String type = key.substring(key.indexOf('.') + 1);

@@ -1,5 +1,8 @@
 package suncertify.db;
 
+/**
+ * Interface for URLyBird application as supplied.
+ */
 public interface DB {
     
     /**

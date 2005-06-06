@@ -3,6 +3,7 @@
  *
  * Created on 06 July 2004, 14:09
  */
+
 package suncertify.client;
 
 import javax.swing.*;
@@ -274,7 +275,8 @@ public class ClientFrame extends JFrame implements ActionListener,
     }        
         
     /**
-     * Lays out the GUI components.
+     * Lays out the GUI components, sets their behaviour parameters and
+     * registers listeners.
      */
     protected void initComponents() {                        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

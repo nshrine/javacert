@@ -3,6 +3,7 @@
  *
  * Created on 11 August 2004, 16:44
  */
+
 package suncertify.client;
 
 import javax.swing.table.AbstractTableModel;

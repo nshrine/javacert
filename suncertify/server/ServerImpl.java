@@ -36,6 +36,16 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         this.db = db;
     }
     
+    /**
+     * Returns a {@link RemoteBookingDB RemoteBookingDB} remote object for
+     * remote clients to use for accessing data stored on the network server.
+     *
+     * @throws RemoteException if there is a communication problem with the
+     *          client.
+     *
+     * @return {@link RemoteBookingDB RemoteBookingDB} object to use for data
+     *          access.
+     */    
     public RemoteBookingDB getBookingDB() throws RemoteException {        
         return new RemoteBookingData(db);
     }    
