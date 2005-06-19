@@ -19,6 +19,21 @@ This is because there could be more than one room available with the exact
 same details. 
 
 
+LOCKING ALGORITHM
+
+I chose to perform the locking by having a Map object as an instance variable
+of the Data class which stores key-value pairs indicating which records are
+currently locked. The key is the number of the locked record and the 
+associated value is the lock cookie with which the record was locked.
+
+The lock and unlock methods are both synchronized on the Data object's 
+monitor such that only one thread can execute either method at a time ensuring
+consistency of the state of the Map of locked records when multiple client
+threads are calling the Data object's methods. The lock method causes the 
+current thread to sleep if the record trying to be locked is already locked.
+When unlock is called and a record is unlocked
+
+
 EXTENDING THE DB INTERFACE 
 
 I extended the DB interface to create an interface appropriate for this 
@@ -61,6 +76,11 @@ a method for unlocking records when a client has died leaving a record locked
 I found that it was useful to have a RemoteBookingData instance per client 
 such that I could implement the Unreferenced interface in RemoteBookingData
 which would me to handle individual client disconnections on the server side.
+
+I therefore implemented a Remote Server object that clients use to obtain
+RemoteBookingData objects.
+
+
 
 
 DOCUMENTATION
