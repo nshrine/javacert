@@ -342,8 +342,7 @@ public class Data implements DB {
          */
         while (lockedRecords.containsKey(new Integer(recNo))) {
             try {
-                wait();
-                System.out.println("Thread: " + Thread.currentThread());
+                wait();                
             } catch (InterruptedException ex) {
                 throw new RuntimeException(ex); // Should never happen
             }

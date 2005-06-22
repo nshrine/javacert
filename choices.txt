@@ -31,7 +31,29 @@ monitor such that only one thread can execute either method at a time ensuring
 consistency of the state of the Map of locked records when multiple client
 threads are calling the Data object's methods. The lock method causes the 
 current thread to sleep if the record trying to be locked is already locked.
-When unlock is called and a record is unlocked
+
+When unlock is called and a record is unlocked all threads waiting for a record
+to become unlocked are awoken by a call to notifyAll() and they execute in turn
+checking to see if the record that was just unlocked was they one they are
+waiting for. If so then the first one to execute (determined by the JVM) that
+was waiting for the record that just became unlocked will aquire the lock and
+the other threads will sleep again until the next record is unlocked.
+
+This algorithm is not ideal in that all threads are awoken and perform a check
+on the Map of locked records rather than just the one waiting for the 
+particular record that was just unlocked. I do not believe that this is a 
+significant performance hit in terms of affecting the responsiveness of the 
+GUI, especially compared to delays due to transmission of data over the 
+network to remote clients and so I decided to stick with this simple 
+algorithm. It also has the drawback that it will not necessarily be the client
+who has been waiting longest for the locked record that will aquire the lock
+first upon the record being unlocked. That is because the JVM schedules the
+order in which threads will execute when notifyAll() is called and all the 
+awoken threads become runnable and compete for the monitor in order
+to execute the synchronized code. I decided that implementing such fairness was
+beyond the scope of this implementation and would not be noticeable unless 
+there were a large number of clients, many of whom were trying to book the
+same booking at about the same time.
 
 
 EXTENDING THE DB INTERFACE 
@@ -78,7 +100,7 @@ such that I could implement the Unreferenced interface in RemoteBookingData
 which would me to handle individual client disconnections on the server side.
 
 I therefore implemented a Remote Server object that clients use to obtain
-RemoteBookingData objects.
+RemoteBookingData objects. 
 
 
 
