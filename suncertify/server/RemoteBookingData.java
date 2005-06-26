@@ -135,9 +135,7 @@ public class RemoteBookingData extends UnicastRemoteObject implements
         unreferenced = true; // Set flag to indicate the client has died
         
         if (lockedRecord > 0) {
-            try {
-                System.out.println("Unlocking record " + lockedRecord
-                        + " with cookie " + savedCookie);
+            try {                
                 unlock(lockedRecord, savedCookie);
             } catch (Exception ex) {
                 throw new RuntimeException(ex); // Should never happen

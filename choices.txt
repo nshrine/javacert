@@ -100,10 +100,117 @@ such that I could implement the Unreferenced interface in RemoteBookingData
 which would me to handle individual client disconnections on the server side.
 
 I therefore implemented a Remote Server object that clients use to obtain
-RemoteBookingData objects. 
+RemoteBookingData objects. This is the only job of the Server class.
+
+
+DEALING WITH CLIENT DISCONNECTION
+
+The RemoteBookingData object records which record the client it serves
+currently has locked and also has a copy of the associated lock cookie. In 
+this way when it detects that the client had died (via a call to the 
+unreferenced() method by the RMI system) it is unable to unlock the record that
+the client was locking. In this implementation the clients only ever lock one
+record at a time so the RemoteBookingData object only has to store one locked
+record number and one lock cookie.
+
+I tested the system for unlocking records when clients disconnect by 
+bombardinf the network server with lock and unlock requests for random records
+simultaneously from 10 client threads and then killing the client threads at
+some random time during execution. However, when I started the clients again
+some records were still locked on the server and so were not being unlocked by
+the call to unreferenced(). I eventually realised that this was because a
+client thread could be waiting in the Data object's lock() method for a record
+to become unlocked when it's unreferenced() method was called. Therefore when
+the client died and unreferenced() was called the thread on the server had not
+yet obtained the lock and so the RemoteBookingData object would not be aware 
+that any record needed unlocking. Then as record becomes available the thread
+on the server would obtain the lock AFTER unreferenced had been called thereby
+locking the record and keeping it locked after the client had died.
+
+To fix this I made the unreferenced() method set a flag indicating that the
+client had died and the RemoteBookingData.lock() method checks this flag
+after it has obtained the lock and if it is set indicating that the client had
+died in the meantime then it immediately unlocks the record again.
+
+
+OBTAINING A DATA CONNECTION
+
+I wanted the client GUI code to be independent of the operating mode i.e
+network or standalone and to just be concerned with accessing a class that
+implements the BookingDB interface. Therefore, when in standalone mode it can
+use BookingData but when it network mode I needed a proxy class that implements
+BookingDB between the client and the remote data access class RemoteBookingData
+that implements RemoteBookingDB.
+
+In order to conformt to the BookingDB interface the BookingDataProxy class 
+simply wraps a RemoteBookingDB object and rethrows any RemoteExceptions as 
+RuntimeExceptions, so that the only checked Exceptions it throws are the ones
+specified in the BookingDB interface. I felt this was appropriate as an
+exception arising from a network communication problem is outside the normal
+operation of the programme and I decided it was beyond the scope of this 
+project to do so but instead just recommend restarting the client. Any locks
+left on the server will be automatically released.
+
+In order for a client to obtain the appropriate data connection object I made
+a factory class that is initialised with a Configuration object that specifies
+the mode of operation, then the BookingDBFactory returns the appropriate
+BookingDB implementation based on the Configuration, either a BookingData
+instance for the server and standalone client or a BookingDataProxy instance
+for the network client.
+
+
+CONFIGURATION
+
+I made a Configuration class for storing details specific to the mode of
+operation. The Configuration class wraps a Properties object that stores the
+configuration parameters as key-value pairs and has the built-in functionality
+to save and load these values from a file.
+
+Configuration objects are initialised with a name identifying the
+configuration, a list of keys the configuration will use and some descriptive
+text for the configuration. The Configuration class also has static application
+constant values such as the name to be used for the title of the main window,
+the default database file name and the default server port.
+
+The Configuration also has definitions for certain types of keys used to 
+reference values in the enclosed Properties object and additionally has a text
+description for these types of keys. Using the getKeys(), getKeyType() and
+getKeyDescription() methods of the Configuration class a GUI tool for editing
+the configuration can dynamically initialise itself with the appropriate
+fields and field labels.
+
+This is what the ConfigurationDialog class does. In this way more configuration
+parameters could be added to the application and the configuration GUI would
+pick them up without having to be re-coded.
+
+
+THE CLIENT GUI
+
+The client GUI frame class ClientFrame displays a Window with a menu, a panel
+at the top for specifying search parameters and a table below displaying
+the fields for records returned from searches of the database. I decided that
+this was a simple and functional layout, being able to modify the list
+of bookings available with the search parameters above quickly and inuitively
+without opening seperate windows which I felt would have been slow and 
+cumbersome. The table data is controlled by a TableModel sub-class called
+BookingTableModel that accesses the database via a BookingDB instance variable
+that is initialised on starting the GUI. I used padding round the edges of the
+search panel components and the booking table to give an aesthetic display.
+
+When editing a booking either by selecting "Edit Booking" from the Edit menu
+or by double-clicking a row in the table (as is common in GUI interfaces) a
+BookingDialog window appears which is a modal dialog displaying the booking
+details and an editable field for entering the customer ID for booking the 
+room. I made the dialog modal such that any client can only edit one booking
+at a time. I felt this functionality was desireable such that a member of 
+staff did not lock many records simultaneously rendering them unavailable to
+other clients.
 
 
 
+STARTING THE APPLICATION
+
+The BootStrap class contains the main method for starting the application.
 
 DOCUMENTATION
 
