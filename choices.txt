@@ -1,3 +1,24 @@
+GENERAL CONSIDERATIONS AND INTERPRETATION OF SPECIFICATION
+
+I did not include any restraint on when the rooms can be booked. Although the
+company only takes bookings within 48 hours of the start of room occupancy
+I felt that it was unecessary to impose this constraint in the software as 
+this is a technology demonstration system that will eventually lead to a
+final web-based production system. Therefore, CSRs should be allowed to 
+experiment and get a feel for the system and not have to wait until certain
+times until they can use the system. Also, in terms of testing the system all
+the data would need to be edited so that there were rooms available within
+the next 48 hour window. This system includes the functionality required for
+a working system for booking rooms with the appropriate locking and data
+integrity for use by multiple clients in a real situation but does not have
+higher level business constraints such as the time when rooms can be booked.
+This system is obviously not meant to be comprehensive as it must be used in
+conjuction with another system that stores customer information corresponding
+to the customer numbers.
+
+
+
+
 DB IMPLEMENTATION
 
 I decided that a simple and robust method of accessing the data file was to
@@ -183,6 +204,11 @@ This is what the ConfigurationDialog class does. In this way more configuration
 parameters could be added to the application and the configuration GUI would
 pick them up without having to be re-coded.
 
+The Configuration class defines 3 constant instances corresponding to the 3
+modes of operation in this implementation i.e. network server, network client
+and standalone operation. The application exclusively uses these three static
+members and does not instantiate any Configuration objects.
+
 
 THE CLIENT GUI
 
@@ -207,10 +233,31 @@ staff did not lock many records simultaneously rendering them unavailable to
 other clients.
 
 
-
 STARTING THE APPLICATION
 
-The BootStrap class contains the main method for starting the application.
+The BootStrap class contains the main method for starting the application. 
+Firstly the command line arguments are parsed and a usage message is displayed
+if they are incorrect.
+
+A Configuration instance is assigned corresponding to the mode of operation
+and the properties corresponding to this mode are loaded from a configuration
+file if one exists otherwise the defaults defined in the Configuration class
+are used.
+
+Next a ConfigurationDialog is displayed so that the user can edit the 
+Configuration parameters (database filename, port number) before the 
+application starts normal operation.
+
+A BookingDB instance is obtained from the BookingDBFactory using the edited
+Configuration and this is passed to the main program that is now started,
+this being either the server, the network client or the standalone client.
+
+After the main part of the program is successfully started and is running in a
+new thread the Configuration that was used to configure the program is saved 
+to a file. The edited Configuration does not get saved if the main program
+did not start as this Configuration is erroneous and so should be discarded
+and the defaults used again next time for initialisation.
+
 
 DOCUMENTATION
 
