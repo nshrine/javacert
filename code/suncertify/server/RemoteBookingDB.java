@@ -157,8 +157,8 @@ public interface RemoteBookingDB extends Remote {
      *
      * @param criteria the criteria to be matched.
      * @param operator the type of match to be performed, either 
-     * {@link BookingDB#SEARCH_TYPE_AND AND} or 
-     * {@link BookingDB#SEARCH_TYPE_OR OR}.
+     * {@link suncertify.db.BookingDB#SEARCH_TYPE_AND AND} or 
+     * {@link suncertify.db.BookingDB#SEARCH_TYPE_OR OR}.
      *
      * @throws RemoteException if there is a communication problem between the
      *          server and client.
