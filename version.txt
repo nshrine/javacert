@@ -1,0 +1,4 @@
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.2-b28)
+Java HotSpot(TM) Client VM (build 1.4.2-b28, mixed mode)
+
+Microsoft Windows XP [Version 5.1.2600]
