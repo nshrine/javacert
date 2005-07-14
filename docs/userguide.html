@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+    <title>URLyBird User Guide</title>
+</head>
+<body>
+  
+<h1 align="center">URLyBird User Guide</h1>
+
+<p>
+<a href="#starting">Starting the Application</a><br>
+<a href="#main">The Main Window</a><br>
+
+<hr>
+
+<a name="starting">
+<h2>Starting the Application</h2>
+<p>
+The URLyBird hotel booking system has 3 modes of operation: network server,
+network client and standalone mode. Upon starting the application you will be
+presented with a configuration window that enables you to set the operating
+parameters of the program.
+<div align="center"><img src="images/configuration.jpg"></div>
+<p>
+The first time you run the program a warning will be displayed indicating that
+the program is unable to load settings from a saved configuration file and will
+be using default settings. When you run the program it will save your settings
+and load them on subsequent occasions so that the configuration dialog will be
+pre-loaded with your previous settings.
+
+<h3>Network Server Mode</h3>
+<p>
+To start the network server type:
+<pre>
+    java -jar runme.jar server
+</pre>
+The configuration window will ask for:
+<ul>
+<li><b>Database File</b> - the database file to use.</li>
+<li><b>Server Port</b> - the port number on which the server should listen for
+network client connections. The default port is 1099.</li>
+</ul>
+If the database file is valid and the port you selected is not already in use
+then you should see a message informing you that the network server has 
+started. On clicking OK on this message the server will run with no further
+interaction.
+<p>
+To stop the server you must either hit CTRL-C in the terminal window that you
+started it in or close the terminal window or if you started the process in
+the background, kill the corresponding java process.
+
+<h3>Network Client Mode</h3>
+<p>
+To start the network client type:
+<pre>
+    java -jar runme.jar
+</pre>
+The configuration window will ask for:
+<ul>
+<li><b>Server Host</b> - the IP address or DNS name of the URLyBird network
+server to connect to.</li>
+<li><b>Server Port</b> - the port number the server to connect to. The default
+port is 1099.</li>
+</ul>
+If the client is able to successfully connect to the specified port on the 
+specified host the main window will be displayed. Otherwise, an error message
+will be displayed.
+
+<h3>Standalone Mode</h3>
+<p>
+To start in standalone mode type:
+<pre>
+    java -jar runme.jar alone
+</pre>
+The configuration window will ask for:
+<ul>
+<li><b>Database File</b> - the database file to use.</li>
+</ul>
+If the database file is valid the main window will be displayed.
+
+<hr>
+
+<a name="main">
+<h2>The Main Window</h2>
+<p>The main window looks like this:
+<div align="center"><img src="images/main.jpg"></div>
+
+</body>
+</html>
