@@ -5,25 +5,28 @@
     <title>URLyBird User Guide</title>
 </head>
 <body>
-  
+
+<a name="top">
 <h1 align="center">URLyBird User Guide</h1>
 
 <p>
 <a href="#starting">Starting the Application</a><br>
 <a href="#main">The Main Window</a><br>
-<a href="#search">Searching for Bookings</a>
-<a href="#book">Making a Booking</a>
+<a href="#search">Searching for Bookings</a><br>
+<a href="#book">Making a Booking</a><br>
+<a href="#exit">Exiting the Application</a>
 
 <hr>
 
 <a name="starting">
+<a href="#top">Back to Top</a>
 <h2>Starting the Application</h2>
 <p>
 The URLyBird hotel booking system has 3 modes of operation: network server,
 network client and standalone mode. Upon starting the application you will be
 presented with a configuration window that enables you to set the operating
 parameters of the program.
-<div align="center"><img src="images/configuration.jpg"></div>
+<p><div align="center"><img src="images/configuration.jpg"></div>
 <p>
 The first time you run the program a warning will be displayed indicating that
 the program is unable to load settings from a saved configuration file and will
@@ -47,10 +50,6 @@ If the database file is valid and the port you selected is not already in use
 then you should see a message informing you that the network server has 
 started. On clicking OK on this message the server will run with no further
 interaction.
-<p>
-To stop the server you must either hit CTRL-C in the terminal window that you
-started it in or close the terminal window or if you started the process in
-the background, kill the corresponding java process.
 
 <h3>Network Client Mode</h3>
 <p>
@@ -84,9 +83,10 @@ If the database file is valid the main window will be displayed.
 <hr>
 
 <a name="main">
+<a href="#top">Back to Top</a>
 <h2>The Main Window</h2>
 <p>The main window looks like this:
-<div align="center"><img src="images/main.jpg"></div>
+<p><div align="center"><img src="images/main.jpg"></div>
 <p>The window is divided into two areas:
 <ol>
 <li>The area labelled "View" at the top where the user specifies which bookings
@@ -98,6 +98,7 @@ those specified by search criteria entered by the user in the "View" area.</li>
 <hr>
 
 <a name="search">
+<a href="#top">Back to Top</a>
 <h2>Searching for Bookings</h2>
 <p>You can search for hotel bookings by the hotel name and the location.
 <dl>
@@ -115,8 +116,104 @@ Bookings for hotels whose location matches <em>exactly</em> the
 name you entered will be displayed in the booking table below.</dd>
 <dt>Searching by Hotel Name and Location</dt>
 <dd>If you enter both a hotel name and a hotel location in the two fields in 
-the "View" panel then you will be able to choose
+the "View" panel then you will be able to search for hotels with a specific 
+at a specific location. There are two types of search that can be performed
+depending on whether you select <tt>AND</TT> or <tt>OR</TT> from
+the selector that will now be activated to the right of the "Name" field:
+<ul>
+<li><b><tt>AND</tt></b> - When you hit "Search" bookings with <em>both</em> the
+exact hotel name <em>and</em> the exact hotel location that you specified will
+be displayed.</li>
+<li><b><tt>OR</tt></b> - When you hit "Search" bookings with <em>either</em>
+the exact hotel name <em>or</em> exact hotel location that you specified will
+be displayed.</li>
+</ul>
+<p>An example is shown below where the user has searched for bookings at
+either the "Elephant Inn" hotel <em>or</em> at the location "Smallville". 
+<p><div align="center"><img src="images/search.jpg"></div>
+</dd>
+<dt>Showing All Bookings</dt>
+<dd>To show all hotel bookings in the system hit the "Show All" button in the
+bottom-right of the "View" panel. This will display all bookings regardless of
+what is entered in the "Name" and "Location" fields.<br>
+You can toggle between displaying all bookings or just those for your specified
+search criteria by hitting "Show All" and "Search" alternately.
+</dd>
 </dl>
+
+<hr>
+
+<a name="book">
+<a href="#top">Back to Top</a>
+<h2>Making a Booking</h2>
+<p>In order to allocate a hotel booking to a specific customer:
+<ol>
+<li>Select the required booking by clicking once with the mouse on the
+corresponding row in the booking table so that it is highlighted.</li>
+<li>Select "Edit Booking" from the "Edit" menu at the top.
+<p><em>Note: alternatively you can just double-click with the mouse on the 
+appropriate row in the booking table instead of performing steps 1 and 2.</em>
+</p>
+<li>If the reservation you selected is not currently being booked by another
+customer services representative then the Booking dialog will be displayed
+(see below).
+<li>If the reservation you selected is currently being booked by another 
+person then you will see a message saying:
+    <b><pre>   Waiting to obtain lock on record</pre></b>
+This message will be displayed until the other person currently working with
+the selecting booking has finished and then the Booking dialog will be 
+automatically displayed. All you can do at this point is wait for the Booking
+dialog to appear when the booking becomes available for altering.
+<p><em>Note: In this version of the system if someone else in addition to you
+is waiting to work with the booking you have selected then when the booking
+becomes available the other person may get to edit the booking before you
+even if you started waiting for the booking first. It is effectively
+random as to which person waiting for the booking gets to work with it first.
+</em></p>
+</li>
+</ol>
+<p>The Booking dialog looks like this:
+<p><div align="center"><img src="images/booking.jpg"></div>
+<p>On the left are the details for the hotel booking and on the right is the
+"Book Room" panel where you enter the customer ID corresponding to the 
+customer who wants to book the room.
+
+<h3>Booking the room</h3>
+<ol>
+<li>Enter the 8-digit customer ID number in the "Customer ID"
+field in the "Book Room" panel on the right of the Booking dialog.</li>
+<li>Hit the "Book" button below the "Customer ID" field.</li>
+<li>You should see a message saying:
+    <b><pre>    Booking allocated to customer &lt;customer ID number&gt;</pre>
+    </b>
+where <tt>&lt;customer ID number&gt;</tt> is the 8-digit customer ID number
+that you entered.
+<p><em>Note: If you entered an invalid customer id, such as the wrong number of
+digits, an error message will be displayed and you should hit "OK" on this
+and then you will be able to try again.</em></p></li>
+<li>Hit "OK" in the box where the booking confirmation message above was 
+displayed and you will be returned to the main window.</li>
+</ol>
+<p>If you decide that you do not want to edit the booking for this room then
+just hit the "Cancel" button at the bottom of the Booking dialog and you will
+be returned to the main window.
+<p><em>Note: You can only work with one booking at a time.</em>
+
+<hr>
+
+<a name="exit">
+<a href="#top">Back to Top</a>
+<h2>Exiting the Application</h2>
+<h3>Exiting the client</h3>
+<p>To exit the client select "Exit" from the "File" menu.
+<p>You must close the Booking dialog first if it is open.
+<h3>Stopping the server</h3>
+<p>There is no graphical interface for stopping the server as it is meant
+to run as a non-interactive background service on the server machine.
+<p>To stop the server you must either hit CTRL-C in the terminal/shell window
+in which you started it or if it is running in the background kill the
+corresponding process by whatever method is appropriate for the operating
+system under which the server is running.
 
 </body>
 </html>
