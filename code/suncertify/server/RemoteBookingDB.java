@@ -49,8 +49,8 @@ public interface RemoteBookingDB extends Remote {
      *
      * @throws RecordNotFoundException if the record does not exist or there is
      *          an error accessing the database.
-     * @throws SecurityException if the record is locked with a cookie other
-     *          than lockCookie.
+     * @throws suncertify.db.SecurityException if the record is locked with a
+     *          cookie other than lockCookie.
      * @throws RemoteException if there is a communication problem between the
      *          server and client.
      */
@@ -69,8 +69,8 @@ public interface RemoteBookingDB extends Remote {
      *
      * @throws RecordNotFoundException if the record does not exist or there is
      *          an error reading the database.
-     * @throws SecurityException if the record is locked with a cookie
-     *          other than lockCookie.
+     * @throws suncertify.db.SecurityException if the record is locked with a
+     *          cookie other than lockCookie.
      * @throws RemoteException if there is a communication problem between the
      *          server and client.
      */
@@ -141,8 +141,8 @@ public interface RemoteBookingDB extends Remote {
      *
      * @throws RecordNotFoundException if the record does not exist or there is 
      *          an error accessing the database.
-     * @throws SecurityException if the record is locked with a cookie
-     *          other than cookie.
+     * @throws suncertify.db.SecurityException if the record is locked with a
+     *          cookie other than cookie.
      * @throws RemoteException if there is a communication problem between the
      *          server and client.
      */

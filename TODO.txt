@@ -1,3 +1,10 @@
+JUSTIFY ALL ACCESS MODIFIERS! (argh)
+
+JAVADOC YOUR EXCEPTIONS PROPERLY AND JUSTIFY USE OF OWN SECURITYEXCEPTION!
+
+
+
+
 Test harness for DB class and network server.
 
 Need to catch RuntimeExceptions from proxy class e.g. when server dies whilst 

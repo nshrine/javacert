@@ -23,8 +23,7 @@ public class InvalidDataFileException extends Exception {
     public InvalidDataFileException() {
         super();
     }
-    
-    
+        
     /**
      * Constructs an instance of <code>InvalidDataFileException</code> with the
      * specified detail message.
