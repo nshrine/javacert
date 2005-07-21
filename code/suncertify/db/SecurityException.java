@@ -7,8 +7,12 @@
 package suncertify.db;
 
 /**
+ * SecurityException is thrown if the user who does not own the lock cookie
+ * for a locked record attempts to access it.
  *
  * @author Nick Shrine
+ *
+ * @see Data
  */
 public class SecurityException extends Exception {
     
@@ -19,8 +23,7 @@ public class SecurityException extends Exception {
     public SecurityException() {
         super();
     }
-    
-    
+        
     /**
      * Constructs an instance of <code>SecurityException</code> with the
      * specified detail message.

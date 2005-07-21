@@ -21,8 +21,7 @@ public class DuplicateKeyException extends java.lang.Exception {
     public DuplicateKeyException() {
         super();
     }
-    
-    
+        
     /**
      * Constructs an instance of <code>DuplicateKeyException</code> with the
      * specified detail message.

@@ -347,10 +347,22 @@ public class ClientFrame extends JFrame implements ActionListener,
         constraints.gridy = 2;        
         searchPanel.add(showAllButton, constraints);
         
+        /*
+         * An extra panel is required at the top to contain the searchPanel
+         * rather than adding the searchPanel directly to the frame. Otherwise,
+         * when resizing the main Window the text fields collapse to a very
+         * small width for some unknown reason when you reach a certain size.
+         */
+        JPanel topPanel = new JPanel();
+        topPanel.add(searchPanel);
+        
         constraints.gridx = 0;
         constraints.gridy = 0;  
+        
+        /* Need the topPanel to fill horizontally to stop collapsing effect. */
+        constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.anchor = GridBagConstraints.PAGE_START;
-        getContentPane().add(searchPanel, constraints);
+        getContentPane().add(topPanel, constraints);
         
         bookingTable = new JTable(tableModel);
         bookingTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
