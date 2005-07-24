@@ -160,10 +160,10 @@ public class Bootstrap {
      * @param db the {@link suncertify.db.BookingDB BookingDB} object for the
      *          client to use for data access.
      */    
-    public static void startClient(BookingDB db) {    
+    public static void startClient(BookingDB db) {        
         ClientFrame frame = new ClientFrame(db);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        frame.setVisible(true);        
     }        
     
     /**
@@ -191,7 +191,7 @@ public class Bootstrap {
     /**
      * Prints the usage information for command-line invocation.
      */
-    protected static void usage() {        
+    private static void usage() {        
         System.err.println("Usage: Bootstrap "
                 + "[" + SERVER_ARG + ", " + ALONE_ARG + "]"
                 + "\n Bootstrap:\twith no arguments starts the network client."

@@ -103,7 +103,7 @@ public class ClientFrame extends JFrame implements ActionListener,
     /**
      * The column widths of the display table.
      */
-    public static final int[] COLUMN_WIDTHS = { 100,
+    protected static final int[] COLUMN_WIDTHS = { 100,
                                                 70,
                                                 20,
                                                 20,
@@ -114,7 +114,7 @@ public class ClientFrame extends JFrame implements ActionListener,
     /**
      * The column alignments for the display table.
      */
-    public static final int[] COLUMN_ALIGNMENT = { JLabel.LEFT, 
+    protected static final int[] COLUMN_ALIGNMENT = { JLabel.LEFT, 
                                                    JLabel.LEFT, 
                                                    JLabel.CENTER, 
                                                    JLabel.CENTER, 
@@ -125,12 +125,12 @@ public class ClientFrame extends JFrame implements ActionListener,
     /**
      * The ratio of the height of the main window to the screen height.
      */
-    public static final float FRAME_HEIGHT_RATIO = 0.75f;
+    protected static final float FRAME_HEIGHT_RATIO = 0.75f;
     
     /**
      * The ratio of the width of the main window to the screen width.
      */
-    public static final float FRAME_WIDTH_RATIO = 0.67f;
+    protected static final float FRAME_WIDTH_RATIO = 0.67f;
    
     /**
      * {@link suncertify.db.BookingDB BookingDB} object used for data access.

@@ -236,10 +236,12 @@ public class BookingDialog extends JDialog implements ActionListener {
                 
         /**
          * This method obtains the lock on the record required by the outer
-         * class and reads the data for the record. It may sleep while 
-         * waiting for the lock on the record. After obtaining the lock and
-         * reading the data it changes the contents of the outer dialog object 
-         * from the default waiting message to a panel for editing the booking.
+         * {@link BookingDialog BookingDialog} object and reads the data for
+         * the record. It may sleep while waiting for the lock on the record.
+         * <p>
+         * After obtaining the lock and reading the data it changes the
+         * contents of the outer dialog object from the default waiting message
+         * to a panel for editing the booking.
          */
         public void run() {            
             try {
