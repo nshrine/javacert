@@ -88,17 +88,8 @@ public class BookingData extends Data implements BookingDB {
                 if (operator == SEARCH_TYPE_AND) { 
                     results.add(new Integer(recNo));                    
                 }
-        }                
+        } //End recordloop                
         
         return (Utils.toIntArray(results)); 
-    }    
-    
-    /**
-     * For debugging return a copy of the map of locked records.
-     *
-     * @return the {@link DB#lockedRecords locked records}.
-     */
-    public synchronized Map getLockedRecords() {
-        return lockedRecords;
-    }
+    }            
 }

@@ -12,7 +12,7 @@ import suncertify.db.RecordNotFoundException;
 import suncertify.db.DuplicateKeyException;
 
 /**
- * An RMI version of the {@link BookingDB BookingDB} interface.
+ * An RMI version of the {@link suncertify.db.BookingDB BookingDB} interface.
  * <p>
  * Implementations should provide a remote Object for remote clients to 
  * access the Booking database on the server.

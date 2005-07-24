@@ -42,7 +42,7 @@ public class BookingDBFactory {
      * @param config the {@link suncertify.Configuration Configuration} object
      *      that specifies the mode of operation.
      *
-     * @see suncertify.Configuration#
+     * @see suncertify.Configuration
      */    
     public BookingDBFactory(Configuration config) {        
         this.config = config;

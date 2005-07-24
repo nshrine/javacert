@@ -8,10 +8,12 @@ final web-based production system. Therefore, CSRs should be allowed to
 experiment and get a feel for the system and not have to wait until certain
 times until they can use the system. Also, in terms of testing the system all
 the data would need to be edited so that there were rooms available within
-the next 48 hour window. This system includes the functionality required for
-a working system for booking rooms with the appropriate locking and data
-integrity for use by multiple clients in a real situation but does not have
-higher level business constraints such as the time when rooms can be booked.
+the next 48 hour window.
+
+This system includes the functionality required for a working system for
+booking rooms with the appropriate locking and data integrity for use by
+multiple clients in a real situation but does not have higher level business
+constraints such as the time when rooms can be booked.
 This system is obviously not meant to be comprehensive as it must be used in
 conjuction with another system that stores customer information corresponding
 to the customer numbers.
@@ -25,7 +27,7 @@ I decided that a simple and robust method of accessing the data file was to
 have a single data access object for the server which performs all reading
 and writing of the database synchronously (i.e. no data caching, all reading
 and writing is directly to and from the file). Therefore this class contains
-a single RandomAccessFile instance for accessing the database.
+a single java.io.RandomAccessFile instance for accessing the database.
 
 To simplify data integrity any method that moves the file pointer is
 synchronized on the Data object's monitor.
@@ -106,13 +108,22 @@ identical to the non-networked BookingDB interface except that it extends the
 Remote interface as required by RMI and each method additionally throws a
 RemoteException, as also required by the RMI API. I decided that on the 
 client side I would wrap the remote instance of the RemoteBookingDB 
-implementation in a proxy class that implements the BookingDB interface. In
-this way, using the well-known Network proxy paradigm (Chapter 10, Hardcore
-Java by Robert Simmons Jr. O'reilly ISBN 0-596-00568-7), it is possible for
-the client to transparently work with a BookingDB object with a
-factory class providing the appropriate implementation at runtime, either a
-BookingData object that accesses the data file within the same JVM or a proxy
-to a RemoteBookingData object that accesses the data file across the network. 
+implementation in a proxy class (BookingDataProxy) that implements the
+BookingDB interface. In this way, it is possible for the client to
+transparently work with a BookingDB object with a factory class providing the
+appropriate implementation at runtime, either a BookingData object that
+accesses the data file within the same JVM or a BookingDataProxy object that
+accesses the data file across the network via a RemoteBookingData object.
+
+Since the BookingDataProxy cannot throw any RemoteExceptions as it has to 
+adhere to the BookingDB interface I decided that any RemoteExceptions it
+caught would be rethrown as RuntimeExceptions. In a production version of the
+application these would be dealt with appropriately when they are caught.
+However, in this technology demonstration version I decided that network IO
+errors are too severe to be handled appropriately and therefore are promoted
+to RuntimeExceptions and the application will crash if there is a severe
+network problem such as loss of connectivity or the server dies. However,
+client death is handled in this version.
 
 Initially RemoteBookingData was a singleton, however when trying to implement
 a method for unlocking records when a client has died leaving a record locked
@@ -258,7 +269,3 @@ to a file. The edited Configuration does not get saved if the main program
 did not start as this Configuration is erroneous and so should be discarded
 and the defaults used again next time for initialisation.
 
-
-DOCUMENTATION
-
-Did not Javadoc interface methods.
