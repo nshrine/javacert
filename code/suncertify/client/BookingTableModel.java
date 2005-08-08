@@ -7,8 +7,10 @@
 package suncertify.client;
 
 import javax.swing.table.AbstractTableModel;
-import suncertify.db.BookingDB;
-import suncertify.db.RecordNotFoundException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import suncertify.db.*;
 
 /**
  * <code>TableModel</code> implementation to model the data stored in a
@@ -18,6 +20,17 @@ import suncertify.db.RecordNotFoundException;
  * @author Nick Shrine
  */
 public class BookingTableModel extends AbstractTableModel {            
+    
+    /**
+     * Specifies the date column.
+     */
+    public static final int DATE_COLUMN = 5;
+    
+    /**
+     * The format of the date column.
+     */
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
+            "yyyy/MM/dd");    
     
     /**
      * {@link suncertify.db.BookingDB BookingDB} object used for data access.
@@ -125,5 +138,27 @@ public class BookingTableModel extends AbstractTableModel {
      */    
     public String getColumnName(int column) {        
         return fieldNames[column];
+    }
+    
+    /**
+     * Returns the date the booking at the specified row is available.
+     * 
+     * @param row the row number of the required booking.
+     * 
+     * @return the date the specified booking is available.
+     *
+     * @throws InvalidDataFileException if the date entry in the database file
+     *          is in the wrong format.
+     */
+    public Date getDateAvailable(int row) throws InvalidDataFileException {
+        String dateString = (String) getValueAt(row, DATE_COLUMN);
+        Date date = null;
+        try {
+            date = DATE_FORMAT.parse(dateString);
+        } catch (ParseException ex) {
+            throw new InvalidDataFileException(
+                    "Date entry for record is corrupt:\n" + ex.getMessage());
+        }
+        return date;
     }
 }
