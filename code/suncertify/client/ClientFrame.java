@@ -12,7 +12,11 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Date;
+import java.text.DateFormat;
+import suncertify.Utils;
 import suncertify.db.BookingDB;
+import suncertify.db.InvalidDataFileException;
 
 /**
  * The Main frame of the URLyBird GUI Client that should be instantiated to
@@ -27,6 +31,18 @@ import suncertify.db.BookingDB;
 public class ClientFrame extends JFrame implements ActionListener,
         CaretListener {        
     
+    /**
+     * The number of hours before a booking is available that it can be
+     * booked.
+     */
+    public static final int HOURS_BEFORE_AVAILABLE = 48;
+    
+    /**
+     * The date format to be used for displaying the available date.
+     */
+    public static final DateFormat DATE_FORMAT =
+            DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
+            
     /**
      * The title of the main window.
      */
@@ -238,7 +254,7 @@ public class ClientFrame extends JFrame implements ActionListener,
             criteria[0] = nameField.getText().trim(); //hotel name field 0
             criteria[1] = locationField.getText().trim(); //location field 1
             
-            /* The search algorithm requires empty criteria to be set to null */
+            /* The search algorithm requires empty criteria be set to null */
             for (int i = 0; i < 2; i++) {
                 criteria[i] = (criteria[i].length() == 0 ? null : criteria[i]);
             }
@@ -258,6 +274,10 @@ public class ClientFrame extends JFrame implements ActionListener,
      * This method is called to bring up the booking dialog for a reservation
      * when the Book menu item is selected or when a row in the display table
      * is double-clicked on.
+     * <p>
+     * If the current time is too soon before the booking is available for a
+     * booking to be allocated to a customer then a message is displayed 
+     * informing the user of when a booking can be taken.
      */
     protected void book() {        
         int row = bookingTable.getSelectedRow();
@@ -268,6 +288,34 @@ public class ClientFrame extends JFrame implements ActionListener,
                     "Please select a row from the table first.");         
         } else {
             int recNo = tableModel.getRecNo(row);       
+            
+            /* Get the date that the occupancy starts */            
+            Date available = null;
+            try {
+                available = tableModel.getDateAvailable(row);
+            } catch (InvalidDataFileException ex) {
+                Utils.errorBox(this, ex.getMessage());
+                return;
+            }
+            
+            /* Check that the booking date has not passed */
+            Date now = new Date();
+            if (now.after(available)) {
+                JOptionPane.showMessageDialog(this,
+                        "The date for booking this reservation has passed.");
+                return;
+            }
+            
+            /* If it is too early to book record display message and return */
+            available = Utils.subtractHours(available, HOURS_BEFORE_AVAILABLE);
+            if (now.before(available)) {
+                JOptionPane.showMessageDialog(this,
+                        "This reservation is not available for booking until\n"
+                        + DATE_FORMAT.format(available));
+                return;
+            }
+            
+            /* Booking is allowed so open booking dialog */
             JDialog bookingDialog = new BookingDialog(this, db, recNo);        
             bookingDialog.setVisible(true);
             tableModel.fireTableDataChanged(); //Update table with new booking

@@ -1,23 +1,5 @@
 GENERAL CONSIDERATIONS AND INTERPRETATION OF SPECIFICATION
 
-I did not include any restraint on when the rooms can be booked. Although the
-company only takes bookings within 48 hours of the start of room occupancy
-I felt that it was unecessary to impose this constraint in the software as 
-this is a technology demonstration system that will eventually lead to a
-final web-based production system. Therefore, CSRs should be allowed to 
-experiment and get a feel for the system and not have to wait until certain
-times until they can use the system. Also, in terms of testing the system all
-the data would need to be edited so that there were rooms available within
-the next 48 hour window.
-
-This system includes the functionality required for a working system for
-booking rooms with the appropriate locking and data integrity for use by
-multiple clients in a real situation but does not have higher level business
-constraints such as the time when rooms can be booked.
-This system is obviously not meant to be comprehensive as it must be used in
-conjuction with another system that stores customer information corresponding
-to the customer numbers.
-
 
 
 
@@ -235,13 +217,21 @@ that is initialised on starting the GUI. I used padding round the edges of the
 search panel components and the booking table to give an aesthetic display.
 
 When editing a booking either by selecting "Edit Booking" from the Edit menu
-or by double-clicking a row in the table (as is common in GUI interfaces) a
-BookingDialog window appears which is a modal dialog displaying the booking
-details and an editable field for entering the customer ID for booking the 
-room. I made the dialog modal such that any client can only edit one booking
-at a time. I felt this functionality was desireable such that a member of 
-staff did not lock many records simultaneously rendering them unavailable to
-other clients.
+or by double-clicking a row in the table (as is common in GUI interfaces) the
+date that the booking is available is checked and if it is more than 48 hours
+in the future then a dialog is displayed informing the user of when the room 
+will be available for booking. Also, if the occupancy date has passed then
+the user will be informed. Since the date-available field in the data file has
+no time information the rooms it is assumed that the room becomes available at
+midnight on the date specified in the data file and therefore is available for
+booking from midnight two days before it is available.
+
+If it is within 48 hours of the start of occupancy then a BookingDialog window
+appears which is a modal dialog displaying the booking details and an editable
+field for entering the customer ID for booking the room. I made the dialog
+modal such that any client can only edit one booking at a time. I felt this
+functionality was desireable such that a member of staff did not lock many
+records simultaneously rendering them unavailable to other clients.
 
 
 STARTING THE APPLICATION
