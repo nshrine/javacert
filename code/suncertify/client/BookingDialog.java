@@ -7,9 +7,11 @@
 package suncertify.client;
 
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import suncertify.db.BookingDB;
 import suncertify.db.RecordNotFoundException;
 import suncertify.Utils;

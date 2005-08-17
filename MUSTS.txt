@@ -1,0 +1,108 @@
+You must not use any materials issued to other certification candidates even if you believe they are identical.
+- DONE
+
+The company's IT department has a data file that contains the essential information for the company, but because
+the data must continue to be manipulated for reports using another custom-written application, the new system must
+reimplement the database code from scratch without altering the data file format.
+- DONE
+
+The new application, using the existing data file format, must allow the CSRs to generate a list of accomodations
+that match a customer's criteria.
+- DONE
+
+The following are the "top level" features that must be implemented:
+    * A client program with a graphical user interface that connects to the database
+    * A data access system that provides record locking and a flexible search mechanism
+    * Network server functionality for the database system
+- DONE
+
+You must create a full suite of documentation for the classes of the completed project. This must be generated
+using the tool "javadoc" and must be in HTML format.
+- DONE
+
+The main architecture of the application must be a traditional client-server system.
+- DONE
+
+The program must be able to work in a non-networked mode. In this mode, the database and GUI must run in the
+same VM and must perform no networking, must not use loopback networking, and must not involve the serialization
+of any objects when communicating between the GUI and database elements.
+- DONE
+
+Architecturally, this mode must use the database and GUI from the networked form, but must not use the network
+server code at all.
+- DONE
+
+You must use either serialized objects over a simple socket connection, or RMI.
+- DONE
+
+Keep in mind that networking must be entirely bypassed in the non-networked mode.
+- DONE
+
+To avoid unnecessary complexity in the marking environment certain restrictions are placed on solutions
+that use RMI.  Specifically:
+#  You must not require the use of an HTTP server.
+#  You must not require the installation of a security manager.
+#  You must provide all classes pre-installed so that no dynamic class downloading occurs.
+#  You must use RMI over JRMP (do not use IIOP)
+- DONE
+
+The user interface for this assignment must satisfy the following criteria:
+    * It must be composed exclusively with components from the Java Foundation Classes (Swing components).
+    * It must allow the user to search the data for all records, or for records where the name and/or location fields exactly match values specified by the user.
+    * It must present search results in a JTable.
+    * It must allow the user to book a selected record, updating the database file accordingly.
+- DONE
+
+Your data access class must be called "Data.java", must be in a package called "suncertify.db",
+and must implement the following interface:
+
+public int create(String[] data) throws DuplicateKeyException;
+// Locks a record so that it can only be updated or deleted by this client.
+// Returned value is a cookie that must be used when the record is unlocked,
+
+public long lock(int recNo) throws RecordNotFoundException;
+// Releases the lock on a record. Cookie must be the cookie
+// returned when the record was locked;
+
+Any unimplemented exceptions in this interface must all be created as member classes of the suncertify.db package.
+Each must have a zero argument constructor and a second constructor that takes a String that serves as the exception's
+description.
+
+In either case, the program must allow the user to specify the location of the database
+
+and it must also accept an indication that a local database is to be used
+
+in which case, the networking must be bypassed entirely
+
+Your server must be capable of handling multiple concurrent requests
+
+and as part of this capability, must provide locking functionality as specified in the interface provided above
+
+Throughout this exercise, you must use exclusively the Java 2 platform.
+
+but the submission that you return must have been tested and shown to work under
+a production (not development) version of the Sun Microsystems' Java 2 platform and that platform
+must not have been superseded by a new production version for more than 18 months by the time you make your submission.
+
+you must not submit any code that is not your own work
+
+The final program must have no dependencies on any libraries other than those of the Java 2 Platform.
+
+When you submit your assignment, each part (client and server) must be executable using a command of this exact form:
+    java -jar <path_and_filename> [<mode>]
+
+Your programs must not require use of command line arguments other than the single mode flag, which must be supported.
+
+Your programs must not require use of command line property specifications.
+
+All configuration must be done via a GUI, and must be persistent between runs of the program.
+
+Such configuration information must be stored in a file called suncertify.properties
+which must be located in the current working directory.
+
+The mode flag must be either "server", indicating the server program must run, "alone",
+indicating standalone mode, or left out entirely, in which case the network client and gui must run.
+
+You must not require manual editing of any files by the examiners.
+
+Design decisions must be described briefly but clearly in your comments.
