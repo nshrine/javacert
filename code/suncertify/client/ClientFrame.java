@@ -7,7 +7,8 @@
 package suncertify.client;
 
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.CaretListener;
+import javax.swing.event.CaretEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.*;
 import java.awt.*;

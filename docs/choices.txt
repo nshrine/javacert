@@ -1,6 +1,8 @@
 GENERAL CONSIDERATIONS AND INTERPRETATION OF SPECIFICATION
 
-
+decided where locking should be called etc.
+overall place that things happen, business methods, re-use,
+business methods on server, checks on client
 
 
 DB IMPLEMENTATION
@@ -68,9 +70,14 @@ particular application whereby an additional findExact method was added to
 find exact matches to the criteria as specified rather than the superinterface
 find method that matches criteria beginning with matching substrings. 
 
-The findExact method also takes as an argument the type of matching of the
-criteria to be done, either returning a match if ALL fields match (logical 
-AND) or if ANY fields match (logical OR). 
+Where the specification says "It must allow the user to search the data for
+all records, or for records where the name and/or location fields exactly match
+values specified by the user.", I decided to interpret this is the most
+inclusive way possible and allow searches for either a preferred hotel or
+preferred location or a search for a specific hotel at a specific location.
+Therefore, the findExact method also takes as an argument the type of matching
+of the criteria to be done, either returning a match if ALL fields match
+(logical AND) or if ANY fields match (logical OR). 
 
 It was necessary to extend the DB interface rather than just adding another 
 method to my DB implementation as the transparency of the different operating 
