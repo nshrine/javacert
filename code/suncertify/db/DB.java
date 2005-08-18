@@ -61,6 +61,7 @@ public interface DB {
      * matches "Fred" or "Freddy".)
      *
      * @param criteria the criteria to be matched.
+     *
      * @return an array of record numbers that match the specified
      *          criteria.
      */

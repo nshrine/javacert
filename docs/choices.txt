@@ -3,7 +3,7 @@ GENERAL CONSIDERATIONS AND INTERPRETATION OF SPECIFICATION
 decided where locking should be called etc.
 overall place that things happen, business methods, re-use,
 business methods on server, checks on client
-
+why I implemented SecurityException
 
 DB IMPLEMENTATION
 
