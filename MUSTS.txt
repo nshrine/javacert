@@ -55,54 +55,77 @@ The user interface for this assignment must satisfy the following criteria:
 
 Your data access class must be called "Data.java", must be in a package called "suncertify.db",
 and must implement the following interface:
-
 public int create(String[] data) throws DuplicateKeyException;
 // Locks a record so that it can only be updated or deleted by this client.
 // Returned value is a cookie that must be used when the record is unlocked,
-
 public long lock(int recNo) throws RecordNotFoundException;
 // Releases the lock on a record. Cookie must be the cookie
 // returned when the record was locked;
+- DONE
 
 Any unimplemented exceptions in this interface must all be created as member classes of the suncertify.db package.
 Each must have a zero argument constructor and a second constructor that takes a String that serves as the exception's
 description.
+- DONE
 
 In either case, the program must allow the user to specify the location of the database
+- DONE
 
 and it must also accept an indication that a local database is to be used
+- DONE
 
 in which case, the networking must be bypassed entirely
+- DONE
 
 Your server must be capable of handling multiple concurrent requests
+- DONE
 
 and as part of this capability, must provide locking functionality as specified in the interface provided above
+- DONE
 
 Throughout this exercise, you must use exclusively the Java 2 platform.
+- DONE
 
 but the submission that you return must have been tested and shown to work under
 a production (not development) version of the Sun Microsystems' Java 2 platform and that platform
 must not have been superseded by a new production version for more than 18 months by the time you make your submission.
+- DONE
+
+
 
 you must not submit any code that is not your own work
 
+
+
+
 The final program must have no dependencies on any libraries other than those of the Java 2 Platform.
+- DONE
 
 When you submit your assignment, each part (client and server) must be executable using a command of this exact form:
     java -jar <path_and_filename> [<mode>]
+- DONE
 
 Your programs must not require use of command line arguments other than the single mode flag, which must be supported.
+- DONE
 
 Your programs must not require use of command line property specifications.
+- DONE
 
 All configuration must be done via a GUI, and must be persistent between runs of the program.
+- DONE
 
 Such configuration information must be stored in a file called suncertify.properties
 which must be located in the current working directory.
+- DONE
 
 The mode flag must be either "server", indicating the server program must run, "alone",
 indicating standalone mode, or left out entirely, in which case the network client and gui must run.
+- DONE
 
 You must not require manual editing of any files by the examiners.
+- DONE
+
+
+
 
 Design decisions must be described briefly but clearly in your comments.
