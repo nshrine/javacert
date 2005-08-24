@@ -1,9 +1,47 @@
 GENERAL CONSIDERATIONS AND INTERPRETATION OF SPECIFICATION
 
-decided where locking should be called etc.
-overall place that things happen, business methods, re-use,
-business methods on server, checks on client
-why I implemented SecurityException
+I decided to group the code into 4 packages:
+
+1. suncertify.db - This contains the lowest level data access classes and
+    exceptions including a data access proxy class for wrapping remote  
+    data access classes. Client applications will use one of the classes in
+    this package for accessing the database.
+
+2. suncertify.server - This package contains the RMI code that
+    runs on the server. Network clients do not directly access these classes,
+    the proxy class in the suncertify.db package wraps remote data access.
+
+3. suncertify.client - This package contains the GUI client code.
+
+4. suncertify - This package contains the code for starting the application
+    and a class for storing and loading configuration data and a class of
+    static utility methods.
+
+I envisage that in future implementations of the system such as in a
+web application that the suncertify.db and suncertify.server packages would
+remain unchanged and that the suncertify.client package would be replaced
+by JSP pages and/or a package of servlet classes. The configuration class
+could also be used in a web application.
+
+This is possible as data access and locking occurs in the suncertify.db 
+package and a web application could use a BookingData instance for data
+access, allowing multiple web client threads to concurrently access the
+database.
+
+Although I tried to make the client as thin as possible with all data access
+and locking handled by the suncertify.db classes, I found that it was simpler
+in this case to handle some business logic in the client such as checking 
+the customer IDs were of the right length and that the current date was close
+enough to the start of occupancy for the room to be booked, rather than
+ throwing an exception back to the client from the database layer. Also, the
+lock, book, unlock cycle is implemented in the client rather than having an
+intermediate facade between the low-level record locking and the client in
+which perhaps there would be a single "book" method. I found this two-tier
+approach simpler in this case as I decided that the record needs to be 
+locked while a user is viewing a record and not just when the actual booking
+changes. In this way the user has a synchronous view of the data and doesn't
+see stale data.
+
 
 DB IMPLEMENTATION
 
