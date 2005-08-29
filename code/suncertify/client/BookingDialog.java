@@ -124,20 +124,26 @@ public class BookingDialog extends JDialog implements ActionListener {
      */    
     public void actionPerformed(ActionEvent event) {        
         String command = event.getActionCommand();
+        String message = null;
         
         if (command.equals(BOOK) || command.equals(CANCEL)) {
             try {
                 if (command.equals(BOOK)) {
-                    String customerId = ownerField.getText().trim();
-                    Integer.valueOf(customerId); //Check string is an integer
-                    if (customerId.length() != 8) {
-                        throw new NumberFormatException();
-                    }                    
+                    String customerId = ownerField.getText().trim();                    
+                    if (customerId.length() > 0) {
+                        Integer.valueOf(customerId); //Check id is an integer
+                        if (customerId.length() != 8) {
+                            throw new NumberFormatException();
+                        }
+                        message = "Booking allocated to customer "
+                                + customerId;
+                    } else {
+                        message = "Booking cancelled";
+                    }
                     record[6] = customerId; //data field 6 is the customer id.
                     db.update(recNo, record, cookie);
-                    JOptionPane.showMessageDialog(this,
-                            "Booking allocated to customer " + customerId,
-                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, message, "Success",
+                            JOptionPane.INFORMATION_MESSAGE);
                 }            
                 db.unlock(recNo, cookie);
                 dispose();

@@ -1,5 +1,15 @@
 GENERAL CONSIDERATIONS AND INTERPRETATION OF SPECIFICATION
 
+EXCEPTION HANDLING RATIONALE
+
+WHY RMI OVER SOCKETS
+
+NO CACHING
+
+DATA SINGLETON
+
+SIMPLE SYNCHRONIZE ALL OPS
+
 I decided to group the code into 4 packages:
 
 1. suncertify.db - This contains the lowest level data access classes and
