@@ -29,7 +29,7 @@ public class LockTest extends TestCase {
     
     public void testLock() throws Exception {
         final Data db = new Data(
-                "H:\\Nick\\java\\cert\\SCDJ2-1.4\\assignment\\db-1x3.db");
+                "H:/Nick/java/cert/SCDJ2-1.4/working.db");
         
         final long[] cookie = new long[11];
         for (int j = 0; j < 3; j++) {
