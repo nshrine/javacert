@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="runme" name="assignment">
+    
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+    
+    <target name="compile">
+        <mkdir dir="build"/>
+        <javac srcdir="code"
+            destdir="build"/>
+    </target>
+        
+    <target name="rmic" depends="compile">
+        <rmic base="build"
+            classname="suncertify.server.RemoteBookingData"
+            stubversion="1.2"/>
+        <rmic base="build"
+            classname="suncertify.server.ServerImpl"
+            stubversion="1.2"/>
+    </target>
+    
+    <target name="runme" depends="compile, rmic">
+        <jar destfile="runme.jar"
+            basedir="build" 
+            includes="suncertify/*.class"
+            manifest="MANIFEST.MF"/>
+    </target>
+    
+</project>

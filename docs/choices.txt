@@ -1,14 +1,9 @@
 GENERAL CONSIDERATIONS AND INTERPRETATION OF SPECIFICATION
 
-EXCEPTION HANDLING RATIONALE
-
-WHY RMI OVER SOCKETS
-
-NO CACHING
-
-DATA SINGLETON
-
-SIMPLE SYNCHRONIZE ALL OPS
+I decided to use RMI for the networking rather than sockets as it is a 
+higher-level API that takes care of establishing connections and 
+serializing/deserializing objects and allows you to easily call methods on
+remote objects. I could not see any advantage in using the sockets API.
 
 I decided to group the code into 4 packages:
 
@@ -61,8 +56,14 @@ and writing of the database synchronously (i.e. no data caching, all reading
 and writing is directly to and from the file). Therefore this class contains
 a single java.io.RandomAccessFile instance for accessing the database.
 
+I decided that a cache of the data in the database file held in memory was
+not necessary as I do not believe that the amount of data being transferred
+when bookings are made will have an impact on performance if the data file
+is accessed directly.
+
 To simplify data integrity any method that moves the file pointer is
-synchronized on the Data object's monitor.
+synchronized on the Data object's monitor, so that only one thread at a time
+can move the file pointer and access the data file.
 
 I did not make the Data class a singleton to allow for future applications
 that may have more than one Data object accessing different data files
@@ -314,3 +315,17 @@ to a file. The edited Configuration does not get saved if the main program
 did not start as this Configuration is erroneous and so should be discarded
 and the defaults used again next time for initialisation.
 
+
+EXCEPTION HANDLING
+
+In the Data class if an IOException occurs in any method that throws a
+RecordNotFoundException, the IOException is rethrown as the cause of the
+RecordNotFoundException as an IO problem accessing the data file effectively
+means the record cannot be found to be accessed. 
+
+Throughout the application, exceptions that should never occur - such as a
+RecordNotFoundException in the BookingTableModel when retrieving the data
+for a row in the table or a SecurityException in the RemoteBookingData class
+when trying to unlock the record the client currently has locked - are rethrown
+as RuntimeExceptions as it means the application is in an inconsistent state
+and cannot reliably continue.
