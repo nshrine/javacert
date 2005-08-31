@@ -261,13 +261,18 @@ public class ClientFrame extends JFrame implements ActionListener,
             }
         }
         
+        int[] searchResult = null;
         if (searchTypeCombo.getSelectedItem().equals(AND)
                 || command.equals(ALL)) {            
-            tableModel.setRecords(db.findExact
-                    (criteria, BookingDB.SEARCH_TYPE_AND));
+            searchResult = db.findExact(criteria, BookingDB.SEARCH_TYPE_AND);
         } else if (searchTypeCombo.getSelectedItem().equals(OR)) {
-            tableModel.setRecords(db.findExact(criteria,
-                    BookingDB.SEARCH_TYPE_OR));
+            searchResult = db.findExact(criteria, BookingDB.SEARCH_TYPE_OR);
+        }
+        tableModel.setRecords(searchResult);
+        
+        if (searchResult.length == 0) {
+            JOptionPane.showMessageDialog(this, "No matches found",
+                    "Search Result", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     

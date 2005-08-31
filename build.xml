@@ -3,6 +3,7 @@
     
     <target name="clean">
         <delete dir="build"/>
+        <delete dir="docs/javadoc"/>
     </target>
     
     <target name="compile">
@@ -22,9 +23,23 @@
     
     <target name="runme" depends="compile, rmic">
         <jar destfile="runme.jar"
-            basedir="build" 
-            includes="suncertify/*.class"
+            basedir="build"             
             manifest="MANIFEST.MF"/>
+    </target>
+    
+    <target name="javadoc">
+        <mkdir dir="docs/javadoc"/>
+        <javadoc sourcepath="code"
+            destdir="docs/javadoc"
+            packagenames="suncertify.*"
+            author="true"/>
+    </target>
+    
+    <target name="submission" depends="runme, javadoc">
+        <jar destfile="submission.jar"
+            basedir="."
+            includes="runme.jar, db-1x3.db, code/**, version.txt, docs/**"            
+            excludes="**/.nbattrs, **/.svn, **/Thumbs.db"/>                    
     </target>
     
 </project>
