@@ -11,8 +11,8 @@ import suncertify.server.RemoteBookingDB;
 
 /**
  * This class provides a proxy so that classes can access data across the 
- * network transparently as if they were using a non networked data access
- * object that implements the {@link BookingDB BookingDB} interaface.
+ * network transparently as if they were using a non-networked data access
+ * object that implements the {@link BookingDB BookingDB} interface.
  * <p>
  * Instances of this class should be obtained using {@link BookingDBFactory
  * BookingDBFactory}.

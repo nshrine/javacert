@@ -15,15 +15,18 @@ import suncertify.Utils;
  * <p>
  * This class uses a binary file as its data store and ensures synchronous
  * access to the data file by requiring clients to obtain a lock cookie before
- * they can write to the file, thereby locking write access from other clients
- * until they unlock the record they are modifying.
+ * they can write to the file, thereby preventing write access by other clients
+ * until the record currently being modified is unlocked.
  * <p>
  * This class is threadsafe allowing concurrent access to the data file 
- * using a shared instance of this class for data access.
+ * by multiple client threads using a single shared instance.
  * <p>
  * If a client tries to lock a record that is already locked by another object
  * the current thread will sleep until the client with the lock releases the
  * lock on the required record.
+ * <p>
+ * Where methods take a record number as an argument, record numbers start at
+ * 1 for the first record as opposed to 0.
  *
  * @author Nick Shrine
  */
@@ -47,7 +50,7 @@ public class Data implements DB {
     /**
      * The value that must be at the start of a valid data file.
      */
-    public static final int MAGIC_COOKIE = 259;
+    public static final int MAGIC_COOKIE = 0x103;
 
     /**
      * The database file.
@@ -66,8 +69,8 @@ public class Data implements DB {
     protected final Map schema;
 
     /**
-     * The length in bytes of the database header preceding the record data
-     * containing the schema information.
+     * The length in bytes of the database header preceding the data records 
+     * that contains the schema information.     
      */
     protected final int headerLength;
 
@@ -169,7 +172,7 @@ public class Data implements DB {
                 i++;
             }
         } catch (IOException ex) {
-            throw new RecordNotFoundException(ex);
+            throw new RuntimeException(ex);
         }
 
         return record;
@@ -196,7 +199,7 @@ public class Data implements DB {
             checkLock(recNo, lockCookie);
             write(data);
         } catch (IOException ex) {
-            throw new RecordNotFoundException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -224,7 +227,7 @@ public class Data implements DB {
             deletedRecords++;
             lockedRecords.remove(new Integer(recNo));
         } catch (IOException ex) {                        
-            throw new RecordNotFoundException(ex); //rethrow any IOException
+            throw new RuntimeException(ex); 
         }
     }
 
@@ -283,7 +286,8 @@ public class Data implements DB {
      *
      * @return the record number of the new record.
      */
-    public synchronized int create(String[] data) throws DuplicateKeyException {
+    public synchronized int create(String[] data) throws
+            DuplicateKeyException {
         int recNo = 1;
 
         try {
@@ -298,11 +302,12 @@ public class Data implements DB {
             }
             
             /* 
-             * If none deleted found, recNo will be numRecords and therefore
-             * the new record will be appended after the last existing record.
+             * If none deleted found, recNo will be numRecords + 1 and 
+             * therefore the new record will be appended after the last
+             * existing record.
              */
             
-            db.seek(findRecord(recNo));
+            db.seek(moveTo(recNo));
             db.writeByte(VALID); //Set the deleted flag to not deleted.
             write(data);
 
@@ -310,7 +315,7 @@ public class Data implements DB {
                 numRecords++; //We have just appended a record
             }                   
         } catch (RecordNotFoundException recNotFound) {
-            throw new RuntimeException(recNotFound);
+            throw new RuntimeException(recNotFound); //Shouldn't happen
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -334,6 +339,8 @@ public class Data implements DB {
      *          updated, or deleted.
      */
     public synchronized long lock(int recNo) throws RecordNotFoundException {
+        
+        /* First check the record exists and is not deleted */
         findUndeletedRecord(recNo);
 
         /* 
@@ -371,7 +378,7 @@ public class Data implements DB {
         findUndeletedRecord(recNo); //check record exists first
         checkLock(recNo, cookie); //check it's not locked by someone else
         lockedRecords.remove(new Integer(recNo)); //remove the lock
-        notifyAll();
+        notifyAll(); //notify other threads waiting to lock the record
     }
 
     /**
@@ -385,8 +392,34 @@ public class Data implements DB {
     }
 
     /**
-     * Returns the file pointer with which to locate the start of the
-     * requested record within the data file.
+     * Returns a file pointer to the start of the requested record within
+     * the data file, even if the record does not exist so that the file
+     * pointer can be positioned for writing new records.
+     *
+     * @param recNo the record number of the record to be accessed.
+     *          
+     * @return the file pointer to the location of the start of the requested
+     *          record within the data file.
+     */        
+    protected final synchronized long moveTo(int recNo) {
+        long offset = headerLength + ((recNo - 1) * recordLength);
+        long fileptr = 0;
+
+        try {
+            db.seek(offset);
+            fileptr = db.getFilePointer();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return fileptr;
+    }
+    
+    /**
+     * Returns a file pointer to the start of the requested record within
+     * the data file if the record exists, otherwise a
+     * {@link RecordNotFoundException RecordNotFoundException} is thrown.
+     * <p>
      * This method also finds deleted records.
      *
      * @param recNo the record number of the record to be found.
@@ -398,16 +431,12 @@ public class Data implements DB {
      */    
     protected synchronized long findRecord(int recNo) throws
             RecordNotFoundException {
-        long offset = headerLength + ((recNo - 1) * recordLength);
-        long fileptr = 0;
-
-        try {
-            db.seek(offset);
-            fileptr = db.getFilePointer();
-        } catch (IOException ex) {
-            throw new RecordNotFoundException(ex);
+        if (recNo > numRecords) {
+            throw new RecordNotFoundException("Record " + recNo
+                    + " does not exist.");
         }
-
+        
+        long fileptr = moveTo(recNo);
         return fileptr;
     }
 
@@ -425,17 +454,18 @@ public class Data implements DB {
      *          record within the data file.
      */    
     protected synchronized long findUndeletedRecord(int recNo) throws
-            RecordNotFoundException {
+            RecordNotFoundException {        
         long fileptr = 0;
 
         try {
             db.seek(findRecord(recNo));
             if (db.readByte() == DELETED) {
-                throw new RecordNotFoundException("Record is deleted");
+                throw new RecordNotFoundException("Record " + recNo
+                        + " is deleted");
             }
             fileptr = db.getFilePointer();
         } catch (IOException ex) {
-            throw new RecordNotFoundException(ex);
+            throw new RuntimeException(ex);
         }
 
         return fileptr;
@@ -468,7 +498,7 @@ public class Data implements DB {
                     "Caller does not own the lock on this record");
         }
     }
-
+    
     /**
      * Writes the data given as the argument to the current location in
      * the data file.

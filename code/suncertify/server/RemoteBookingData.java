@@ -14,7 +14,7 @@ import suncertify.db.*;
 /**
  * This implementation of the {@link RemoteBookingDB RemoteBookingDB} interface
  * allows remote clients to access the database. One instanace per client is
- * instantiated on the server.
+ * created on the server.
  * <p>
  * A note of the record currently locked by the remote client is kept so that
  * if the client dies or the network connection is lost the record can be

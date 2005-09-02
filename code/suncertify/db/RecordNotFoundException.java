@@ -7,7 +7,8 @@
 package suncertify.db;
 
 /**
- * This exception is thrown if the Record requested cannot be found.
+ * This exception is thrown if the Record requested does not exist or is
+ * deleted.
  *
  * @author Nick Shrine
  */

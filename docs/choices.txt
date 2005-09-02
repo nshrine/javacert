@@ -181,10 +181,12 @@ this way when it detects that the client had died (via a call to the
 unreferenced() method by the RMI system) it is unable to unlock the record that
 the client was locking. In this implementation the clients only ever lock one
 record at a time so the RemoteBookingData object only has to store one locked
-record number and one lock cookie.
+record number and one lock cookie. In future this could be modified to store
+a Map of locked record numbers and associated cookies for clients that lock
+multiple records simultaneously.
 
 I tested the system for unlocking records when clients disconnect by 
-bombardinf the network server with lock and unlock requests for random records
+bombarding the network server with lock and unlock requests for random records
 simultaneously from 10 client threads and then killing the client threads at
 some random time during execution. However, when I started the clients again
 some records were still locked on the server and so were not being unlocked by
@@ -318,14 +320,10 @@ and the defaults used again next time for initialisation.
 
 EXCEPTION HANDLING
 
-In the Data class if an IOException occurs in any method that throws a
-RecordNotFoundException, the IOException is rethrown as the cause of the
-RecordNotFoundException as an IO problem accessing the data file effectively
-means the record cannot be found to be accessed. 
-
-Throughout the application, exceptions that should never occur - such as a
-RecordNotFoundException in the BookingTableModel when retrieving the data
-for a row in the table or a SecurityException in the RemoteBookingData class
-when trying to unlock the record the client currently has locked - are rethrown
-as RuntimeExceptions as it means the application is in an inconsistent state
-and cannot reliably continue.
+Throughout the application, exceptions that should never occur or cannot be
+reliably recovered from - such as an IOException in the Data class or a
+RecordNotFoundException in the BookingTableModel class when retrieving data for
+a table row or a SecurityException in the RemoteBookingData class when
+unlocking a record - are rethrown as RuntimeExceptions as it means there is
+a system error or the application is in an internally inconsistent state and 
+therefore cannot reliably continue.
