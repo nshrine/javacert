@@ -29,8 +29,8 @@ import suncertify.server.RemoteBookingDB;
 public class BookingDBFactory {        
     
     /**
-     * Specifies the mode of operation and therefore the implemenatation of
-     * <code>BookingDB</code> that this class should make.
+     * Specifies the mode of operation and therefore which implementation of
+     * <code>BookingDB</code> this class should return.
      */    
     protected final Configuration config;
     

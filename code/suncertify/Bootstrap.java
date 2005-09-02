@@ -17,14 +17,15 @@ import suncertify.server.Server;
 import suncertify.server.ServerImpl;
 
 /**
- * This class is used to start the application.
+ * This class contains the main method to load configuration parameters and 
+ * start the application.
  * <p>
  * It parses the command-line arguments and loads the corresponding 
- * configuration either from an existing file or by instantiating a default
+ * configuration either from an existing file or by creating a default
  * instance of the {@link Configuration Configuration} class.
  * <p>
- * It then starts a {@link ConfigurationDialog ConfigurationDialog} which 
- * allows GUI editing of the application parameters before the application 
+ * It then opens a {@link ConfigurationDialog ConfigurationDialog} window which 
+ * allows editing of the application parameters in a GUI before the application 
  * (either server or client) is started proper.
  * <p>
  * After the application has been started the configuration used is saved to
@@ -45,9 +46,16 @@ public class Bootstrap {
     public static final String ALONE_ARG = "alone";                
     
     /**
+     * Should never be instantiated.
+     */
+    private Bootstrap() {
+        
+    }
+    
+    /**
      * Main method to start the application.
      *
-     * @param args the command-line arguments used to specify mode of
+     * @param args the command-line arguments used to specify the mode of
      *          operation.
      */    
     public static void main(String[] args) {        
@@ -142,10 +150,13 @@ public class Bootstrap {
     /**
      * Starts a configuration dialog to edit the application's parameters.
      *
-     * @param config the {@link Configuration Configuration} object to edit.
+     * @param config the {@link Configuration Configuration} object to be
+     *          edited in the dialog.
      *
      * @return <code>true</code> if the edits were confirmed by the user or 
      *          <code>false</code> if the user hit Cancel.
+     *
+     *  @see ConfigurationDialog
      */    
     public static boolean editConfiguration(Configuration config) {
         ConfigurationDialog editConfig = new ConfigurationDialog(config);
@@ -159,6 +170,8 @@ public class Bootstrap {
      *
      * @param db the {@link suncertify.db.BookingDB BookingDB} object for the
      *          client to use for data access.
+     *
+     * @see suncertify.client.ClientFrame
      */    
     public static void startClient(BookingDB db) {        
         ClientFrame frame = new ClientFrame(db);
@@ -177,6 +190,8 @@ public class Bootstrap {
      * @throws RemoteException if there is a network communication problem.
      * @throws AlreadyBoundException if an instance of the server is already
      *          bound in the namespace.
+     *
+     * @see suncertify.server.ServerImpl
      */    
     public static void startServer(Configuration config, BookingDB db)
             throws RemoteException, AlreadyBoundException {

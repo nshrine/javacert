@@ -18,6 +18,13 @@ import java.awt.Component;
 public class Utils {        
     
     /**
+     * Should never be instantiated.
+     */
+    private Utils() {
+        
+    }
+    
+    /**
      * Converts the given <code>Collection</code> of <code>Integer</code>
      * objects to an array of primitive int values.
      *

@@ -21,7 +21,7 @@ import suncertify.Utils;
  * owener of the booking. It displays the relevant details for the booking
  * and an editable field to allocate the booking to a person.
  * <p>
- * The person is specified by an 8 digit person id as specified by the format
+ * The person is specified by an 8 digit Customer ID as specified by the format
  * of the database.
  * <p>
  * This dialog should be opened by a top-level GUI window that allows a user
@@ -129,7 +129,7 @@ public class BookingDialog extends JDialog implements ActionListener {
         if (command.equals(BOOK) || command.equals(CANCEL)) {
             try {
                 if (command.equals(BOOK)) {
-                    String customerId = ownerField.getText().trim();                    
+                    String customerId = ownerField.getText().trim();
                     if (customerId.length() > 0) {
                         Integer.valueOf(customerId); //Check id is an integer
                         if (customerId.length() != 8) {
@@ -148,8 +148,8 @@ public class BookingDialog extends JDialog implements ActionListener {
                 db.unlock(recNo, cookie);
                 dispose();
             } catch (NumberFormatException ex) {
-                Utils.errorBox(this, "Invalid entry.\n\n"
-                        + "Must be an 8 digit integer");
+                Utils.errorBox(this, "Invalid Customer ID\n\n"
+                        + "Must be an 8-digit number");
             } catch (RecordNotFoundException ex) {
                 Utils.errorBox(this, ex.getMessage());
             } catch (suncertify.db.SecurityException ex) {
@@ -241,7 +241,14 @@ public class BookingDialog extends JDialog implements ActionListener {
      * up the GUI thread thereby allowing it to display a waiting message.
      */
     protected class OpenRecord implements Runnable {
-                
+        
+        /**
+         * Creates a new instance of OpenRecord.
+         */
+        public OpenRecord() {
+            
+        }
+        
         /**
          * This method obtains the lock on the record required by the outer
          * {@link BookingDialog BookingDialog} object and reads the data for

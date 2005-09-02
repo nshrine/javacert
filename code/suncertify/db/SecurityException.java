@@ -7,8 +7,8 @@
 package suncertify.db;
 
 /**
- * SecurityException is thrown if the user who does not own the lock cookie
- * for a locked record attempts to access it.
+ * SecurityException is thrown if an incorrect lock cookie is supplied when
+ * calling a method that requires a record to be locked first.
  *
  * @author Nick Shrine
  *

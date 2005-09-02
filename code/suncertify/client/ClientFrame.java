@@ -23,7 +23,7 @@ import suncertify.db.InvalidDataFileException;
  * The Main frame of the URLyBird GUI Client that should be instantiated to
  * start the client.
  * <p>
- * The GUI requires a data access object that implements the {@link
+ * The client requires a data access object that implements the {@link
  * suncertify.db.BookingDB BookingDB} interface in order to communicate with
  * the hotel booking database.
  *  
@@ -76,7 +76,7 @@ public class ClientFrame extends JFrame implements ActionListener,
     protected static final String SEARCH = "Search";
     
     /**
-     * The name of the show all button and the identifier for the show all
+     * The name of the "Show All" button and the identifier for the "Show All"
      * command that is issued when wanting to display all records.
      */
     protected static final String ALL = "Show All";
@@ -150,13 +150,13 @@ public class ClientFrame extends JFrame implements ActionListener,
     protected static final float FRAME_WIDTH_RATIO = 0.67f;
    
     /**
-     * {@link suncertify.db.BookingDB BookingDB} object used for data access.
+     * {@link suncertify.db.BookingDB} object used for data access.
      */
     protected final BookingDB db;
     
     /**
-     * {@link BookingTableModel BookingTableModel} object used for modelling 
-     * the data for the display table.
+     * {@link BookingTableModel} object used for modelling the data for the
+     * display table.
      */
     protected final BookingTableModel tableModel;
     
@@ -181,7 +181,7 @@ public class ClientFrame extends JFrame implements ActionListener,
     protected JTable bookingTable;
     
     /**
-     * Creates a new instance of the Client using the supplied 
+     * Creates a new instance of the client using the supplied 
      * {@link suncertify.db.BookingDB} object for data access.
      *
      * @param db {@link suncertify.db.BookingDB} object to use for data access.
@@ -195,7 +195,8 @@ public class ClientFrame extends JFrame implements ActionListener,
             
     /**
      * Called when an action that raises an <code>ActionEvent</code> is 
-     * performed on the GUI.
+     * performed on the GUI. In this case if the "search" buttons or 
+     * "Edit booking" or "Quit" menu items are selected.
      *
      * @param event the event raised by a GUI action.
      */

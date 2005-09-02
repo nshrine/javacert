@@ -13,7 +13,7 @@ import java.text.ParseException;
 import suncertify.db.*;
 
 /**
- * <code>TableModel</code> implementation to model the data stored in a
+ * A <code>TableModel</code> implementation to model the data stored in a
  * database accessed with a {@link suncertify.db.BookingDB BookingDB}
  * implememtation making it available for display in a <code>JTable</code>.
  * 

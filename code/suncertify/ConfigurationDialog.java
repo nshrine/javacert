@@ -13,14 +13,14 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * Dialog that is displayed to enter the configuration parameters for the 
+ * Dialog in which to enter the configuration parameters for the 
  * URLyBird application.
  * <p>
  * For example when starting the server, the dialog will ask for the 
  * database file to read and the port number to listen for connections on.
  * <p>
  * The dialog allows the parameters of the {@link Configuration Configuration}
- * object for this invocation object to be edited.
+ * object for this invocation to be edited.
  *
  * @author Nick Shrine
  */
@@ -84,8 +84,8 @@ public class ConfigurationDialog extends JDialog implements ActionListener,
      * Creates a new instance of ConfigurationDialog using the supplied
      * {@link Configuration Configuration} instance.
      *
-     * @param config the {@link Configuration Configuration} object specifying
-     * the parameters of this invocation of the application.
+     * @param config the {@link Configuration Configuration} object to be
+     *          edited in this dialog.
      */
     public ConfigurationDialog(Configuration config) {        
         super((JFrame) null, config.getDescription(), true);
@@ -133,8 +133,8 @@ public class ConfigurationDialog extends JDialog implements ActionListener,
     
     /**
      * Called when the caret in the text fields is moved. This
-     * method checks the contents of the text fields after an edit of the
-     * contents and enables Ok button if the contents are valid.
+     * method checks the contents of the text fields after they are edited
+     * and enables Ok button if the contents are valid.
      *
      * @param event The event raised by a caret change.
      */  

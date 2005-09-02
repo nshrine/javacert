@@ -10,14 +10,15 @@ import java.util.Properties;
 import java.io.*;
 
 /**
- * This is basically a wrapper class round a <code>Properties</code> object
- * that holds a description of the configuration each instance represents 
- * and descriptions for the key-value pairs of the enclosed
- * <code>Properties</code> object.
+ * This is a wrapper class round a <code>Properties</code> object that holds
+ * configuration parameters for the application.
+ * <p>
+ * Instances hold a description of the configuration and descriptions for
+ * the key-value pairs of the enclosed <code>Properties</code> object.
  * <p>
  * In this way a GUI tool for editing the configuration can determine the
  * type of value and dynamically display field prompts based on the
- * retrieved key-value pair description. 
+ * retrieved descriptions. 
  *
  * @author Nick Shrine
  */
@@ -123,22 +124,26 @@ public class Configuration {
     protected final String description;
     
     /**
-     * The <code>Properties</code> object used for storing this configuration.
+     * The <code>Properties</code> object used for storing the configuration
+     * parameters.
      */
     protected final Properties properties;
     
     /**
      * Creates a new <code>Configuration</code> specified by a prefix for
      * property keys to be saved with, a set of keys specifying what sort of
-     * values are to be stored and a description that indicates the mode of
+     * values are to be stored and a description indicating the mode of
      * operation that this <code>Configuration</code> specifies.
      *
-     * @param prefix the prefix to be used for properties stored for this
+     * @param prefix the prefix to be used for property keys of this
      *      <code>Configuration</code>.
      * @param keys an array of property keys specifying the sort of values 
-     *      this <code>Configuration</code> stores.
+     *      this <code>Configuration</code> stores i.e. an array containing
+     *      values chosen from {@link #FILE_KEY FILE_KEY},
+     *      {@link #HOST_KEY HOST_KEY}, {@link #PORT_KEY PORT_KEY} or any
+     *      custom keys that may be required.
      * @param description text that describes the mode of operation this 
-     *      <code>Configuration</code> specifies.
+     *      <code>Configuration</code> specifies e.g. "Server" or "Client".
      */    
     protected Configuration(String prefix, String[] keys, String description) {
         this.prefix = prefix;
