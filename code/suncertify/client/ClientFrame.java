@@ -249,8 +249,8 @@ public class ClientFrame extends JFrame implements ActionListener,
      */    
     protected void search(String command) {
         
-        /* There is one search criteria for each of the 7 data fields */
-        String[] criteria = new String[7]; 
+        /* There is one search criteria for each of the data fields */
+        String[] criteria = new String[FIELDNAMES.length]; 
         
         if (command.equals(SEARCH)) {
             criteria[0] = nameField.getText().trim(); //hotel name field 0

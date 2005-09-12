@@ -121,8 +121,13 @@ public class ConfigurationDialog extends JDialog implements ActionListener,
             for (int i = 0; i < keys.length; i++) {
                 
                 /* Set the config parameters to the edited field values */
-                String value = valueFields[i].getText().trim();                
-                config.set(keys[i], value);
+                String value = valueFields[i].getText().trim();
+                try {
+                    config.set(keys[i], value);
+                } catch (IllegalArgumentException ex) {
+                    Utils.errorBox(this, ex.getMessage());
+                    return;
+                }
             }
             confirmed = true;
             dispose();
@@ -141,18 +146,12 @@ public class ConfigurationDialog extends JDialog implements ActionListener,
     public void caretUpdate(CaretEvent event) {        
         for (int i = 0; i < keys.length; i++) {
             String value = valueFields[i].getText().trim();
+            
+            /* Simply check the field is not empty */
             if (value.length() < 1) {
                 okButton.setEnabled(false);
                 return;
-            } else {
-                try {
-                    if (Integer.parseInt(value) < 1) {
-                        okButton.setEnabled(false);
-                    }
-                } catch (NumberFormatException ex) {
-                    okButton.setEnabled(false);
-                }
-            }
+            } 
         }
         
         /* All fields must be valid so we can enable the ok button */
@@ -171,7 +170,8 @@ public class ConfigurationDialog extends JDialog implements ActionListener,
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = INNER; 
         propsPanel.setBorder(new TitledBorder("Configuration"));
-                
+
+        /* Add a text field for each editable value in the configuration */
         valueFields = new JTextField[keys.length];        
         for (int i = 0; i < keys.length; i++) {
             constraints.gridy = i;

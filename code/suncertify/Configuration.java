@@ -65,6 +65,16 @@ public class Configuration {
     public static final String DEFAULT_PORT = "1099";
     
     /**
+     * The minimum port number.
+     */
+    public static final int MIN_PORT = 1;
+    
+    /**
+     * The maximum port number.
+     */
+    public static final int MAX_PORT = 65535;
+    
+    /**
      * The JNI name for the server to be bound to.
      */
     public static final String JNI_NAME = "urlybird";
@@ -234,7 +244,22 @@ public class Configuration {
      *
      * @param value the value to set the property to.
      */    
-    public void set(String key, String value) {        
+    public void set(String key, String value) {
+        
+        /* If it is the port that is being set, check that it is in range */
+        if (getKeyType(key).equals(PORT_KEY)) {
+            try {
+                int port = Integer.parseInt(value);
+                if ((port < MIN_PORT) || (port > MAX_PORT)) {
+                    throw new IllegalArgumentException("Port number " 
+                            + port + " out of range.");
+                }
+            } catch (NumberFormatException nfe) {
+                throw new IllegalArgumentException(
+                        "Port number must be an integer");
+            }
+        }
+        
         properties.put(key, value);
     }
     
