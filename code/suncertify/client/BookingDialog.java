@@ -105,11 +105,13 @@ public class BookingDialog extends JDialog implements ActionListener {
         record = new String[ClientFrame.FIELDNAMES.length];        
         
         setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        
+        /* Display waiting panel until seperate thread can open record */
         setContentPane(getWaitingPanel());
         pack();
         setResizable(false);
         setLocationRelativeTo(getParent());
-        
+                
         Thread openRecord = new Thread(new OpenRecord());
         openRecord.start();
     }        

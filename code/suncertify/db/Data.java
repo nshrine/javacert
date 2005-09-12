@@ -115,16 +115,12 @@ public class Data implements DB {
     public Data(String filename) throws FileNotFoundException,
             InvalidDataFileException, IOException {
         db = new RandomAccessFile(filename, "rw");
-
-        try {
-            int cookieValue = db.readInt();
-            if (cookieValue != MAGIC_COOKIE) {
-                throw new InvalidDataFileException(filename);
-            }
-        } catch (IOException ex) {
+        
+        int cookieValue = db.readInt();
+        if (cookieValue != MAGIC_COOKIE) {
             throw new InvalidDataFileException(filename);
         }
-
+        
         fieldCount = db.readShort();
         Map tmpSchema = loadSchema();
         schema = Collections.unmodifiableMap(tmpSchema);

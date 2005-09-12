@@ -2,6 +2,8 @@
 <project basedir="." default="runme" name="assignment">
     
     <target name="clean">
+        <delete file="runme.jar"/>
+        <delete file="submission.jar"/>        
         <delete dir="build"/>
         <delete dir="docs/javadoc"/>
     </target>
