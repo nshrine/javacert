@@ -16,7 +16,7 @@ public class TestWrite {
      */
     public static void main(String[] args) {
         
-        String[] entry = {"MyHotel", "Bigham", "23", "Y", "$34.34", "2005/09/13", ""};
+        String[] entry = {"MyHotel", "Bigham", "23", "Y", "$34.34", "2005/09/17", ""};
         
         try {
             Data data = new Data(args[0]);        

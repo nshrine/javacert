@@ -90,9 +90,9 @@ current thread to sleep if the record trying to be locked is already locked.
 
 When unlock is called and a record is unlocked all threads waiting for a record
 to become unlocked are awoken by a call to notifyAll() and they execute in turn
-checking to see if the record that was just unlocked was they one they are
+checking to see if the record that was just unlocked was the one they are
 waiting for. If so then the first one to execute (determined by the JVM) that
-was waiting for the record that just became unlocked will aquire the lock and
+was waiting for the record that just became unlocked will acquire the lock and
 the other threads will sleep again until the next record is unlocked.
 
 This algorithm is not ideal in that all threads are awoken and perform a check
@@ -102,7 +102,7 @@ significant performance hit in terms of affecting the responsiveness of the
 GUI, especially compared to delays due to transmission of data over the 
 network to remote clients and so I decided to stick with this simple 
 algorithm. It also has the drawback that it will not necessarily be the client
-who has been waiting longest for the locked record that will aquire the lock
+who has been waiting longest for the locked record that will acquire the lock
 first upon the record being unlocked. That is because the JVM schedules the
 order in which threads will execute when notifyAll() is called and all the 
 awoken threads become runnable and compete for the monitor in order
@@ -207,14 +207,14 @@ died in the meantime then it immediately unlocks the record again.
 
 OBTAINING A DATA CONNECTION
 
-I wanted the client GUI code to be independent of the operating mode i.e
+I wanted the client GUI code to be independent of the operating mode i.e.
 network or standalone and to just be concerned with accessing a class that
 implements the BookingDB interface. Therefore, when in standalone mode it can
 use BookingData but when it network mode I needed a proxy class that implements
 BookingDB between the client and the remote data access class RemoteBookingData
 that implements RemoteBookingDB.
 
-In order to conformt to the BookingDB interface the BookingDataProxy class 
+In order to conform to the BookingDB interface the BookingDataProxy class 
 simply wraps a RemoteBookingDB object and rethrows any RemoteExceptions as 
 RuntimeExceptions, so that the only checked Exceptions it throws are the ones
 specified in the BookingDB interface. I felt this was appropriate as an
@@ -267,8 +267,8 @@ The client GUI frame class ClientFrame displays a Window with a menu, a panel
 at the top for specifying search parameters and a table below displaying
 the fields for records returned from searches of the database. I decided that
 this was a simple and functional layout, being able to modify the list
-of bookings available with the search parameters above quickly and inuitively
-without opening seperate windows which I felt would have been slow and 
+of bookings available with the search parameters above quickly and intuitively
+without opening separate windows which I felt would have been slow and 
 cumbersome. The table data is controlled by a TableModel sub-class called
 BookingTableModel that accesses the database via a BookingDB instance variable
 that is initialised on starting the GUI. I used padding round the edges of the
@@ -288,7 +288,7 @@ If it is within 48 hours of the start of occupancy then a BookingDialog window
 appears which is a modal dialog displaying the booking details and an editable
 field for entering the customer ID for booking the room. I made the dialog
 modal such that any client can only edit one booking at a time. I felt this
-functionality was desireable such that a member of staff did not lock many
+functionality was desirable such that a member of staff did not lock many
 records simultaneously rendering them unavailable to other clients.
 
 
